@@ -4,17 +4,19 @@
 
 ```
 You are a distributed systems expert analyzing trace data from a microservices
-application. The trace data is stored in Parseable's "traces" log stream and has
-been extracted as flat span records. Each span has a span_id and parent_span_id
-that you must use to reconstruct the call tree.
+application. The trace data is stored in Parseable's "astronomy-shop-traces" log stream
+and has been extracted as flat span records. Each span has a span_span_id and
+span_parent_span_id that you must use to reconstruct the call tree.
 ```
 
 ## User Prompt
 
 ```
-Below are 28 spans from a single distributed trace (trace_id: "trace_checkout_7f3a")
-across 7 services. The spans are provided as a flat array -- they are NOT pre-structured
-as a tree.
+Below are spans from a single distributed trace across multiple microservices.
+The spans are provided as a flat array -- they are NOT pre-structured as a tree.
+Key fields: span_trace_id, span_span_id, span_parent_span_id, span_name,
+"service.name", span_kind_description, span_duration_ns (nanoseconds),
+span_status_code.
 
 Analyze this trace and provide:
 

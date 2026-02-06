@@ -3,24 +3,25 @@
 ## Prompt 1: P99 Latency Query
 
 ```
-Given this Parseable log stream schema for the "traces" stream, write a DataFusion SQL
+Given this Parseable log stream schema for the "astronomy-shop-traces" stream, write a DataFusion SQL
 query to find the top 10 slowest API endpoints with average and p99 latency.
 
-Schema:
+Schema (key fields):
 - p_timestamp (TIMESTAMP) -- ingestion timestamp assigned by Parseable
-- trace_id (VARCHAR) -- distributed trace identifier
-- span_id (VARCHAR) -- unique span identifier
-- parent_span_id (VARCHAR) -- parent span identifier (empty for root spans)
-- service_name (VARCHAR) -- originating microservice name
-- operation_name (VARCHAR) -- the operation or endpoint name
-- duration_ms (DOUBLE) -- span duration in milliseconds
-- status_code (VARCHAR) -- span status: OK, ERROR, UNSET
-- http_method (VARCHAR) -- HTTP method: GET, POST, PUT, DELETE
-- http_status (INT) -- HTTP response status code
-- http_url (VARCHAR) -- request URL path
+- span_trace_id (VARCHAR) -- distributed trace identifier
+- span_span_id (VARCHAR) -- unique span identifier
+- span_parent_span_id (VARCHAR) -- parent span identifier (empty for root spans)
+- "service.name" (VARCHAR) -- originating microservice name (quoted due to dot)
+- span_name (VARCHAR) -- the operation or endpoint name
+- span_duration_ns (BIGINT) -- span duration in nanoseconds
+- span_status_code (VARCHAR) -- span status: OK, ERROR, UNSET
+- "http.method" (VARCHAR) -- HTTP method: GET, POST, PUT, DELETE
+- "http.status_code" (VARCHAR) -- HTTP response status code
+- "http.url" (VARCHAR) -- request URL path
 
 Important: Use PostgreSQL-compatible SQL supported by Parseable's DataFusion engine. Use APPROX_PERCENTILE_CONT (not quantile()),
 COUNT(*) (not count()), and INTERVAL '1 hour' (not INTERVAL 1 HOUR).
+Field names containing dots must be quoted with double quotes (e.g., "service.name").
 ```
 
 ## Prompt 2: PromQL Alert Rule
@@ -48,16 +49,17 @@ The alert should:
 Write a DataFusion SQL query to correlate high-latency spans with their parent traces.
 The query should:
 
-1. Find spans in the last 1 hour where duration_ms > 1000 (high latency)
+1. Find spans in the last 1 hour where span_duration_ns > 1000000000 (high latency, > 1s)
 2. Join back to the same table to find the root span of each trace
-   (root span has parent_span_id = '' or parent_span_id IS NULL)
-3. Return: trace_id, root service_name, root operation_name, root duration_ms,
-   slow span service_name, slow span operation_name, slow span duration_ms
+   (root span has span_parent_span_id = '' or span_parent_span_id IS NULL)
+3. Return: span_trace_id, root "service.name", root span_name, root span_duration_ns,
+   slow span "service.name", slow span span_name, slow span span_duration_ns
 4. Order by slow span duration descending
 5. Limit to 20 results
 
-Use the "traces" log stream in Parseable. Use PostgreSQL-compatible SQL:
+Use the "astronomy-shop-traces" log stream in Parseable. Use PostgreSQL-compatible SQL:
 - APPROX_PERCENTILE_CONT for percentiles
 - INTERVAL '1 hour' for time intervals
 - p_timestamp for the Parseable ingestion timestamp
+- Field names with dots must be quoted: "service.name", "http.method", etc.
 ```

@@ -1,0 +1,10 @@
+{
+  "experiment": "02-log-analysis",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T064216Z",
+  "input_tokens": 126451,
+  "output_tokens": 2870,
+  "estimated_cost_usd": 2.112015,
+  "elapsed_seconds": 68.44,
+  "stop_reason": "end_turn"
+}

@@ -1,0 +1,10 @@
+{
+  "experiment": "07-otel-instrumentation",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T065441Z",
+  "input_tokens": 2788,
+  "output_tokens": 2704,
+  "estimated_cost_usd": 0.24462,
+  "elapsed_seconds": 34.84,
+  "stop_reason": "end_turn"
+}

@@ -1,0 +1,10 @@
+{
+  "experiment": "08-schema-slo",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T065641Z",
+  "input_tokens": 2873,
+  "output_tokens": 4096,
+  "estimated_cost_usd": 0.350295,
+  "elapsed_seconds": 60.03,
+  "stop_reason": "max_tokens"
+}

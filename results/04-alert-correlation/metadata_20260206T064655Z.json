@@ -1,0 +1,10 @@
+{
+  "experiment": "04-alert-correlation",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T064655Z",
+  "input_tokens": 3109,
+  "output_tokens": 4096,
+  "estimated_cost_usd": 0.353835,
+  "elapsed_seconds": 80.23,
+  "stop_reason": "max_tokens"
+}

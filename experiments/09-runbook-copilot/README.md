@@ -21,11 +21,11 @@ A `CheckoutDBPoolExhausted` alert fires during on-call hours. The engineer uses 
 - Multi-turn context maintenance
 - Correct identification of transaction leak pattern
 - Actionable remediation steps
-- Mention of Keystone as the production interface for delivering copilot capabilities to on-call engineers
+- Mention of Keystone (available in Parseable Cloud and Enterprise editions) as the production interface for delivering copilot capabilities to on-call engineers
 
 ## Keystone: Production Interface for Copilot Workflows
 
-In production, Parseable's Keystone is the primary interface for these copilot interactions. It runs the same LLM-powered reasoning tested here -- with built-in schema awareness and direct access to all log streams from the Prism UI. On-call engineers use Keystone to query logs and get AI-assisted analysis without switching between tools or constructing prompts manually.
+In production, Parseable's Keystone (available in Parseable Cloud and Enterprise editions) is the primary interface for these copilot interactions. It runs the same LLM-powered reasoning tested here -- with built-in schema awareness and direct access to all log streams from the Prism UI. On-call engineers use Keystone to query logs and get AI-assisted analysis without switching between tools or constructing prompts manually.
 
 ## Files
 

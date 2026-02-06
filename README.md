@@ -90,17 +90,17 @@ Each experiment directory contains:
 
 ### Experiment Summary
 
-| # | Experiment | Type | Score |
-|---|-----------|------|-------|
-| 1 | Setup & Verification | -- | -- |
-| 2 | Log Analysis | Live | 3/3 anomalies, 0 false positives |
-| 3 | Query Generation | Live | 2/3 first attempt, 3/3 after correction |
-| 4 | Alert Correlation | Scenario | Correct root cause + grouping |
-| 5 | Incident RCA | Live | Correct diagnosis (high confidence) |
-| 6 | Trace Analysis | Live | Full tree reconstruction, correct critical path |
-| 7 | OTel Instrumentation | Live | Correct instrumentation with minor redundancy |
-| 8 | Schema + SLO Design | Scenario | Production-quality schema + SLI framework |
-| 9 | Runbook + Copilot | Scenario | Correct multi-turn triage |
+| # | Experiment | Type | Score | Cost | Notes |
+|---|-----------|------|-------|------|-------|
+| 1 | Setup & Verification | -- | -- | -- | Stack deployment |
+| 2 | Log Analysis | Live | 13/13 | $2.11 | 9 anomalies (3 crit, 3 warn, 3 info) + 2 cascading patterns, 0 false positives |
+| 3 | Query Generation | Live | 9/9 (3/3 first attempt) | $0.40 | All 3 queries correct on first attempt using real schema |
+| 4 | Alert Correlation | Scenario | 3.00/3.00 | $0.35 | 4-group decomposition, correct root cause, full causal chain (truncated at max_tokens) |
+| 5 | Incident RCA | Scenario | 3.00/3.00 | $0.42 | CPU throttling root cause identified with 99% confidence, 7-step failure chain |
+| 6 | Trace Analysis | Live | 3.00/3.00 | $0.63 | 33 spans across 5 services, deduplication handled, 2800:1 client-server gap found |
+| 7 | OTel Instrumentation | Live | 4.5/5 | $0.24 | Correct instrumentation + context propagation, minor custom span redundancy |
+| 8 | Schema + SLO Design | Scenario | 4.5/5 | $0.35 | 24-field schema + Go impl + PII handling (truncated at max_tokens) |
+| 9 | Runbook + Copilot | Scenario | -- | -- | Not yet evaluated |
 
 ## Running Experiments
 
@@ -133,7 +133,7 @@ python scripts/run_experiment.py --all
 |------|-------------|
 | **Log stream** | A named collection of log data in Parseable (similar to a table) |
 | **Prism UI** | Parseable's web-based UI for querying and visualization |
-| **Keystone** | Parseable's AI orchestration layer -- uses LLMs (Claude, GPT-4, Bedrock) with built-in schema awareness to answer natural language queries via three internal agents (Intent, SQL, Visualization) |
+| **Keystone** (available in Parseable Cloud and Enterprise editions) | Parseable's AI orchestration layer -- uses LLMs (Claude, GPT-4, Bedrock) with built-in schema awareness to answer natural language queries via three internal agents (Intent, SQL, Visualization) |
 | **`p_timestamp`** | Auto-added timestamp field on every ingested record |
 | **DataFusion** | Apache Arrow's SQL query engine that powers Parseable's query layer |
 | **OTLP ingestion** | Native OpenTelemetry Protocol HTTP endpoint on port 8000 |
@@ -151,17 +151,18 @@ All SQL queries in this repository use PostgreSQL-compatible SQL, executed by Pa
 | String match | `col LIKE '%pattern%'` | Standard SQL LIKE |
 | Conditional count | `COUNT(*) FILTER (WHERE condition)` | DataFusion filter clause |
 
-## Cost Estimates
+## Actual Costs (Claude Opus 4.6)
 
-| Experiment | Input Tokens | Output Tokens | Estimated Cost |
-|------------|-------------|---------------|----------------|
-| Log analysis (200 lines) | ~45,000 | ~2,000 | ~$0.75 |
-| SQL generation (3 queries) | ~3,000 | ~1,500 | ~$0.10 |
-| Alert correlation (18 alerts) | ~5,000 | ~3,000 | ~$0.20 |
-| Incident RCA (multi-signal) | ~25,000 | ~4,000 | ~$0.55 |
-| Trace analysis (28 spans) | ~15,000 | ~3,000 | ~$0.35 |
-| OTel instrumentation | ~2,000 | ~3,000 | ~$0.12 |
-| **Total (all experiments)** | **~95,000** | **~19,500** | **~$2.07** |
+| Experiment | Input Tokens | Output Tokens | Cost | Latency |
+|------------|-------------|---------------|------|---------|
+| 02: Log analysis | 126,451 | 2,870 | $2.11 | 68s |
+| 03: SQL generation (3 queries) | 18,679 | 1,656 | $0.40 | 31s |
+| 04: Alert correlation (18 alerts) | 3,109 | 4,096 | $0.35 | 80s |
+| 05: Incident RCA (multi-signal) | 8,167 | 3,935 | $0.42 | 82s |
+| 06: Trace analysis (33 spans) | 24,376 | 3,513 | $0.63 | 65s |
+| 07: OTel instrumentation | 2,788 | 2,704 | $0.24 | 35s |
+| 08: Schema + SLO design | 2,873 | 4,096 | $0.35 | 60s |
+| **Total (7 experiments)** | **186,443** | **22,870** | **$4.50** | **~7 min** |
 
 ## License
 

@@ -37,7 +37,7 @@ All three queries ran successfully against a Parseable instance with the `traces
 
 ## How Keystone Delivers These Capabilities
 
-Parseable's Keystone orchestrates LLMs (including Claude) to convert natural language to SQL queries in production. It adds value on top of the raw LLM capability tested here:
+Parseable's Keystone (available in Parseable Cloud and Enterprise editions) orchestrates LLMs (including Claude) to convert natural language to SQL queries in production. It adds value on top of the raw LLM capability tested here:
 
 - **Schema awareness:** Keystone's SQL agent automatically resolves log stream schemas, eliminating the need to provide schema context in prompts.
 - **Multi-agent orchestration:** Keystone coordinates Intent, SQL, and Visualization agents to deliver end-to-end answers in the Prism UI.

@@ -1,0 +1,10 @@
+{
+  "experiment": "05-incident-rca",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T064947Z",
+  "input_tokens": 8167,
+  "output_tokens": 3935,
+  "estimated_cost_usd": 0.41763,
+  "elapsed_seconds": 82.24,
+  "stop_reason": "end_turn"
+}

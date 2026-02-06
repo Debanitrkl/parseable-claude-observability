@@ -1,5 +1,13 @@
 # Experiment 03: Query Generation -- Evaluation
 
+## Experiment Context
+
+Claude was given the real schema from Parseable's `astronomy-shop-traces` log stream (extracted via the Parseable API) and asked to generate three queries: a P99 latency query (DataFusion SQL), a PromQL alert rule, and a parent trace correlation query (DataFusion SQL).
+
+**Model:** Claude Opus 4.6 (`claude-opus-4-6`)
+**Input tokens:** 18,679 | **Output tokens:** 1,656 | **Cost:** $0.40 | **Latency:** 31.0s
+**Stop reason:** `end_turn` (completed naturally)
+
 ## Scoring Rubric
 
 Each query is scored on three dimensions (1 point each, max 3 per query):
@@ -26,128 +34,73 @@ A key challenge for LLMs is distinguishing DataFusion SQL from ClickHouse SQL. M
 ## Query 1: P99 Latency -- Top 10 Slowest Endpoints
 
 ### Generated Query
-```sql
-SELECT
-    service_name,
-    operation_name,
-    http_method,
-    COUNT(*) AS request_count,
-    ROUND(AVG(duration_ms), 2) AS avg_latency_ms,
-    ROUND(APPROX_PERCENTILE_CONT(duration_ms, 0.99), 2) AS p99_latency_ms,
-    ROUND(APPROX_PERCENTILE_CONT(duration_ms, 0.95), 2) AS p95_latency_ms,
-    ROUND(MAX(duration_ms), 2) AS max_latency_ms
-FROM traces
-WHERE p_timestamp > NOW() - INTERVAL '1 hour'
-    AND http_method IS NOT NULL
-GROUP BY service_name, operation_name, http_method
-HAVING COUNT(*) >= 10
-ORDER BY p99_latency_ms DESC
-LIMIT 10;
-```
+
+Claude used the **actual field names** from the real schema: `"service.name"` (quoted due to dot), `"http.method"`, `span_name`, `span_duration_ns`, and `p_timestamp`. It correctly converted nanoseconds to milliseconds by dividing by `1e6`.
 
 ### Scoring
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Syntax Validity | 1/1 | Runs clean in Parseable SQL editor |
-| Semantic Correctness | 1/1 | Correctly computes avg and p99 per endpoint, filters low-cardinality groups |
-| Idiomatic Usage | 1/1 | Uses `APPROX_PERCENTILE_CONT`, `COUNT(*)`, `INTERVAL '1 hour'` correctly |
+| Syntax Validity | 1/1 | Uses `APPROX_PERCENTILE_CONT`, quoted field names, correct `INTERVAL` syntax |
+| Semantic Correctness | 1/1 | Groups by service + method + span_name, filters with `HAVING COUNT(*) >= 5` |
+| Idiomatic Usage | 1/1 | Proper DataFusion functions, `ROUND(..., 2)` for readability |
 
 **Query 1 Score: 3/3**
 
 ## Query 2: PromQL Alert Rule -- Error Rate > 5%
 
 ### Generated Rule
-```yaml
-groups:
-  - name: checkout-service-alerts
-    rules:
-      - alert: HighErrorRate
-        expr: |
-          (
-            sum(rate(http_server_request_duration_seconds_count{
-              job="checkout-service",
-              http_status_code=~"5.."
-            }[5m]))
-          /
-            sum(rate(http_server_request_duration_seconds_count{
-              job="checkout-service"
-            }[5m]))
-          ) > 0.05
-        for: 2m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Checkout service error rate above 5%"
-          description: "Error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
-```
+
+Produced a complete Prometheus alerting rule YAML with `http_server_request_duration_seconds_count` as the metric, `http_status_code=~"5.."` regex for 5xx matching, `for: 2m` stabilization window, and `$value | humanizePercentage` in annotations.
 
 ### Scoring
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
 | Syntax Validity | 1/1 | Valid PromQL and valid Prometheus alerting rule YAML |
-| Semantic Correctness | 1/1 | Correct ratio calculation with `rate()` over 5m window, `5..` regex for 5xx |
-| Idiomatic Usage | 1/1 | Uses `for: 2m` to avoid flapping, proper annotations with template functions |
+| Semantic Correctness | 1/1 | Correct ratio calculation with `rate()` over 5m window |
+| Idiomatic Usage | 1/1 | Uses `for: 2m` to avoid flapping, proper `sum()` wrappers for service-level aggregation |
 
 **Query 2 Score: 3/3**
 
-## Query 3: Parent Trace Correlation -- First Attempt
+## Query 3: Parent Trace Correlation -- High-Latency Spans to Root Spans
 
-### First Attempt (Failed)
-```sql
-SELECT
-    slow.trace_id,
-    root.service_name AS root_service,
-    root.operation_name AS root_operation,
-    root.duration_ms AS root_duration_ms,
-    slow.service_name AS slow_span_service,
-    slow.operation_name AS slow_span_operation,
-    slow.duration_ms AS slow_span_duration_ms
-FROM traces AS slow
-INNER JOIN traces AS root
-    ON slow.trace_id = root.trace_id
-    AND (root.parent_span_id = '' OR root.parent_span_id IS NULL)
-WHERE slow.p_timestamp > NOW() - INTERVAL '1 hour'
-    AND slow.duration_ms > (
-        SELECT quantile(0.99)(duration_ms) FROM traces
-        WHERE p_timestamp > NOW() - INTERVAL '1 hour'
-    )
-ORDER BY slow.duration_ms DESC
-LIMIT 20;
-```
+### Generated Query
 
-**Failure:** Used `quantile(0.99)(duration_ms)` in the subquery -- ClickHouse syntax. DataFusion does not support the `quantile()()` double-parenthesis function call syntax.
+Used CTEs (`slow_spans` and `root_spans`) with time filtering on both sides of the join. Root spans identified via `span_parent_span_id = '' OR span_parent_span_id IS NULL`. Included a `pct_of_trace` calculated column showing what percentage of total trace time each slow span consumed.
 
-### After Correction (Passed)
-The threshold subquery was corrected to use a fixed threshold (`duration_ms > 1000`) as specified in the prompt, and the query was simplified to avoid the unnecessary percentile subquery.
+Key design decisions noted by Claude:
+- Used `> 1000000000` (1 second in nanoseconds) as the slow span threshold
+- `NULLIF(r.root_duration_ns, 0)` guards against division by zero
+- `INNER JOIN` (not LEFT JOIN) intentionally excludes orphan spans without root spans
 
-### Scoring (After Correction)
+### Scoring
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Syntax Validity | 1/1 | Runs clean after correction |
+| Syntax Validity | 1/1 | Valid CTE syntax, correct DataFusion functions |
 | Semantic Correctness | 1/1 | Correctly joins slow spans to root spans via trace_id |
-| Idiomatic Usage | 1/1 | Proper DataFusion self-join, time filtering on both sides |
+| Idiomatic Usage | 1/1 | Proper DataFusion CTEs, time filtering on both sides, `NULLIF` for safety |
 
-**Query 3 Score: 3/3 (after correction)**
-**Query 3 First Attempt Score: 1/3 (syntax failure)**
+**Query 3 Score: 3/3 (first attempt)**
 
 ## Summary
 
-| Query | First Attempt | After Correction |
-|-------|--------------|-----------------|
-| P99 Latency | 3/3 | 3/3 |
-| PromQL Alert | 3/3 | 3/3 |
-| Trace Correlation | 1/3 | 3/3 |
-| **Overall** | **7/9 (2/3 pass)** | **9/9 (3/3 pass)** |
+| Query | Score | Notes |
+|-------|-------|-------|
+| P99 Latency | 3/3 | Used real schema field names correctly |
+| PromQL Alert | 3/3 | Production-ready alerting rule |
+| Trace Correlation | 3/3 | Clean first attempt with CTEs |
+| **Overall** | **9/9 (3/3 pass on first attempt)** | |
 
 ## Key Observations
 
-1. **ClickHouse contamination is real.** The model's training data includes significant ClickHouse SQL examples, and it will occasionally produce ClickHouse syntax when generating analytical queries. Explicit prompting about the SQL dialect helps but does not fully prevent this.
+1. **Real schema context was decisive.** The prompt included the actual Parseable schema with field names like `"service.name"` (with dot) and `span_duration_ns` (nanoseconds, not milliseconds). Claude used these exact field names and correctly handled the nanosecond-to-millisecond conversion. Without the real schema, the model would have guessed generic column names.
 
-2. **Self-correction is fast.** When told the syntax was wrong and why, the model immediately produced correct PostgreSQL-compatible SQL without further prompting.
+2. **No ClickHouse contamination.** Unlike prior experiments with synthetic schemas, all three queries used correct DataFusion syntax on the first attempt. `APPROX_PERCENTILE_CONT(span_duration_ns, 0.99)` was used correctly (not ClickHouse `quantile(0.99)(col)`).
 
-3. **PromQL generation was clean.** The model has strong PromQL knowledge and produced a production-ready alerting rule on the first attempt.
+3. **PromQL generation was clean.** The model has strong PromQL knowledge and produced a production-ready alerting rule with correct metric naming, regex matching, and stabilization windows.
 
-4. **Schema context is essential.** Providing the explicit schema in the prompt was necessary. Without it, the model would have guessed column names and likely used generic observability column names that do not match Parseable's schema (e.g., `timestamp` instead of `p_timestamp`).
+4. **Design rationale was thorough.** Each query included detailed design decisions explaining why specific choices were made (e.g., `HAVING COUNT(*) >= 5`, `INNER JOIN` vs `LEFT JOIN`, CTE time filtering).
+
+5. **Schema-aware field quoting.** Fields with dots in their names (e.g., `"service.name"`, `"http.method"`) were correctly double-quoted, which is required by DataFusion for identifiers containing special characters.

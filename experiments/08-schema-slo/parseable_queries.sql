@@ -1,5 +1,6 @@
 -- Experiment 08: Schema + SLO Design - Parseable Monitoring Queries
 -- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
+-- Stream: astronomy-shop-logs (OpenTelemetry demo app)
 
 -- =============================================================================
 -- STREAM CREATION
@@ -8,7 +9,7 @@
 -- Create the payment log stream via Parseable API (curl command)
 -- Uses static schema mode to enforce field types at ingestion time.
 --
--- curl -X PUT "http://parseable:8000/api/v1/logstream/payment_logs" \
+-- curl -X PUT "http://parseable:8000/api/v1/logstream/astronomy-shop-logs" \
 --   -H "Authorization: Basic <base64-credentials>" \
 --   -H "Content-Type: application/json" \
 --   -H "X-P-Static-Schema-Flag: true" \
@@ -62,7 +63,7 @@ SELECT
         ELSE 'BUDGET_EXCEEDED'
     END AS slo_status
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation IN ('charge', 'refund', 'payout')
     AND p_timestamp > NOW() - INTERVAL '30 days';
@@ -77,7 +78,7 @@ SELECT
         / CAST(COUNT(*) AS FLOAT) * 100, 4
     ) AS availability_pct
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation IN ('charge', 'refund', 'payout')
     AND p_timestamp > NOW() - INTERVAL '7 days'
@@ -104,7 +105,7 @@ SELECT
         ELSE 'SLO_BREACHED'
     END AS latency_slo_status
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation = 'charge'
     AND status = 'success'
@@ -116,7 +117,7 @@ SELECT
     COUNT(*) AS charge_count,
     ROUND(APPROX_PERCENTILE_CONT(duration_ms, 0.99), 2) AS p99_ms
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation = 'charge'
     AND status = 'success'
@@ -155,7 +156,7 @@ SELECT
         ELSE 'OK'
     END AS alert_status
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation IN ('charge', 'refund', 'payout')
     AND p_timestamp > NOW() - INTERVAL '1 hour';
@@ -176,7 +177,7 @@ SELECT
         ELSE 'OK'
     END AS alert_status
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation IN ('charge', 'refund', 'payout')
     AND p_timestamp > NOW() - INTERVAL '5 minutes';
@@ -197,7 +198,7 @@ SELECT
         ELSE 'OK'
     END AS alert_status
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation IN ('charge', 'refund', 'payout')
     AND p_timestamp > NOW() - INTERVAL '6 hours';
@@ -218,7 +219,7 @@ SELECT
         ELSE 'OK'
     END AS alert_status
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation IN ('charge', 'refund', 'payout')
     AND p_timestamp > NOW() - INTERVAL '30 minutes';
@@ -234,7 +235,7 @@ SELECT
     COUNT(*) AS error_count,
     ROUND(AVG(duration_ms), 2) AS avg_duration_ms
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     status IN ('failure', 'timeout')
     AND p_timestamp > NOW() - INTERVAL '1 hour'
@@ -255,7 +256,7 @@ SELECT
     span_id,
     message
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     trace_id = '4bf92f3577b34da6a3ce929d0e0e4736'
 ORDER BY
@@ -273,7 +274,7 @@ SELECT
     correlation_id,
     trace_id
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     amount_cents > 100000
     AND p_timestamp > NOW() - INTERVAL '24 hours'
@@ -292,7 +293,7 @@ SELECT
         / CAST(COUNT(*) AS FLOAT) * 100, 2
     ) AS timeout_rate_pct
 FROM
-    payment_logs
+    "astronomy-shop-logs"
 WHERE
     operation = 'charge'
     AND p_timestamp > NOW() - INTERVAL '1 hour'

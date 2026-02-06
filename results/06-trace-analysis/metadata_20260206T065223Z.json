@@ -1,0 +1,10 @@
+{
+  "experiment": "06-trace-analysis",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T065223Z",
+  "input_tokens": 24376,
+  "output_tokens": 3513,
+  "estimated_cost_usd": 0.629115,
+  "elapsed_seconds": 65.38,
+  "stop_reason": "end_turn"
+}

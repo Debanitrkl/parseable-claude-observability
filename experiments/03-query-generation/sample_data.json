@@ -1,201 +1,2150 @@
 {
+  "stream_name": "astronomy-shop-traces",
   "schema": {
-    "stream_name": "traces",
     "fields": [
       {
-        "name": "p_timestamp",
+        "name": "app.ads.ad_request_type",
         "data_type": "Utf8",
         "nullable": true,
-        "metadata": {
-          "description": "Ingestion timestamp assigned by Parseable"
-        }
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       },
       {
-        "name": "trace_id",
-        "data_type": "Utf8",
-        "nullable": false,
-        "metadata": {
-          "description": "Distributed trace identifier"
-        }
-      },
-      {
-        "name": "span_id",
-        "data_type": "Utf8",
-        "nullable": false,
-        "metadata": {
-          "description": "Unique span identifier"
-        }
-      },
-      {
-        "name": "parent_span_id",
+        "name": "app.ads.ad_response_type",
         "data_type": "Utf8",
         "nullable": true,
-        "metadata": {
-          "description": "Parent span identifier, empty for root spans"
-        }
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       },
       {
-        "name": "service_name",
+        "name": "app.ads.category",
         "data_type": "Utf8",
-        "nullable": false,
-        "metadata": {
-          "description": "Originating microservice name"
-        }
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       },
       {
-        "name": "operation_name",
+        "name": "app.ads.contextKeys",
         "data_type": "Utf8",
-        "nullable": false,
-        "metadata": {
-          "description": "Operation or endpoint name"
-        }
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       },
       {
-        "name": "duration_ms",
+        "name": "app.ads.contextKeys.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.ads.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.cache_hit",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.cart.items.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.currency.conversion.from",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.currency.conversion.to",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.email.recipient",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.filtered_products.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.filtered_products.list",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.loyalty.level",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.order.amount",
         "data_type": "Float64",
-        "nullable": false,
-        "metadata": {
-          "description": "Span duration in milliseconds"
-        }
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       },
       {
-        "name": "status_code",
-        "data_type": "Utf8",
-        "nullable": false,
-        "metadata": {
-          "description": "Span status: OK, ERROR, UNSET"
-        }
-      },
-      {
-        "name": "http_method",
+        "name": "app.order.id",
         "data_type": "Utf8",
         "nullable": true,
-        "metadata": {
-          "description": "HTTP method: GET, POST, PUT, DELETE"
-        }
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       },
       {
-        "name": "http_status",
-        "data_type": "Int32",
-        "nullable": true,
-        "metadata": {
-          "description": "HTTP response status code"
-        }
-      },
-      {
-        "name": "http_url",
+        "name": "app.order.items.count",
         "data_type": "Utf8",
         "nullable": true,
-        "metadata": {
-          "description": "Request URL path"
-        }
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.payment.amount",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.payment.card_type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.payment.card_valid",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.payment.charged",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.payment.transaction.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.product.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.product.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.product.quantity",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.products.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.products_recommended.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.quote.cost.total",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.quote.items.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.recommendation.cache_enabled",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.shipping.amount",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.shipping.cost.total",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.shipping.tracking.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.user.currency",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "app.user.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "canceled",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "category",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "client.address",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "code.file.path",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "code.function",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "code.function.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "code.line.number",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "code.namespace",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "component",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "container.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.connection_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.connection_string",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.redis.database_index",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.redis.flags",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.statement",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.system",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "db.user",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "dns.error_message",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "dns.error_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "docker.cli.cobra.command_path",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "downstream_cluster",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "error",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "error.message",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "error.reason",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "error.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_app.payment.transaction.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_app.quote.cost.total",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_app.shipping.cost.total",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_app.shipping.tracking.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_dropped_attributes_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_duration_ms",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_duration_ns",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_exception.escaped",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_exception.message",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_exception.stacktrace",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_exception.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.key",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.provider.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.provider_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.result.reason",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.result.value",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.result.variant",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_feature_flag.variant",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_message.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_message.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_message.uncompressed_size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_time_unix_nano",
+        "data_type": {
+          "Timestamp": [
+            "Millisecond",
+            null
+          ]
+        },
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "event_time_unix_nano_epoch",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "exception.escaped",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "exception.message",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "exception.stacktrace",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "exception.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.change_count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.key",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.provider.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.provider_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.result.reason",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.result.value",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.result.variant",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.source",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "feature_flag.variant",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "grpc.error_message",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "grpc.error_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "grpc.method",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "grpc.status_code",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "guid:x-request-id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "host.arch",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "host.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.flavor",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.host",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.method",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.protocol",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.request.body.size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.request.method",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.request_content_length",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.request_content_length_uncompressed",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.response.body.size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.response.status_code",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.response_content_length",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.route",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.scheme",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.status_code",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.status_text",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.target",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.url",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "http.user_agent",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "item.count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "jinja2.template_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "jinja2.template_path",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "kafka.record.queue_time_ms",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "link_dropped_attributes_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "link_span_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "link_trace_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "message.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "message.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "message.uncompressed_size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.batch.message_count",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.client_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.destination.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.destination.partition.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.kafka.consumer.group",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.kafka.destination.partition",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.kafka.message.offset",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.kafka.producer.duration_ms",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.kafka.producer.success",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.message.body.size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.operation",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "messaging.system",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.host.ip",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.host.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.host.port",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.peer.ip",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.peer.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.peer.port",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.sock.peer.addr",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.sock.peer.port",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "net.transport",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "network.peer.address",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "network.peer.port",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "network.protocol.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "network.transport",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "network.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "next.route",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "next.rsc",
+        "data_type": "Boolean",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "next.span_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "next.span_type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "node_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "os.build_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "os.description",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "os.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "os.type",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "os.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "p_format",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "p_src_ip",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "p_timestamp",
+        "data_type": {
+          "Timestamp": [
+            "Millisecond",
+            null
+          ]
+        },
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "p_user_agent",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "peer.address",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "peer.ipv4",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "peer.service",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "phoenix.action",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "phoenix.plug",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.command",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.command_args",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.command_line",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.executable.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.executable.path",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.owner",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.pid",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.runtime.description",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.runtime.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "process.runtime.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "product.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "quantity",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "request_size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "resource_dropped_attributes_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "resource_schema_url",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "response_flags",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "response_size",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "rpc.connect_rpc.error_code",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "rpc.grpc.status_code",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "rpc.method",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "rpc.service",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "rpc.system",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "rpc.user_agent",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "scope_dropped_attributes_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "scope_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "scope_schema_url",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "scope_version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "server.address",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "server.port",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "service.instance.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "service.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "service.namespace",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "service.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "sinatra.template_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_dropped_attributes_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_dropped_events_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_dropped_links_count",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_duration_ms",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_duration_ns",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_end_time_unix_nano",
+        "data_type": {
+          "Timestamp": [
+            "Millisecond",
+            null
+          ]
+        },
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_end_time_unix_nano_epoch",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_flags",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_flags_description",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_kind",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_kind_description",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_parent_span_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_span_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_start_time_unix_nano",
+        "data_type": {
+          "Timestamp": [
+            "Millisecond",
+            null
+          ]
+        },
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_start_time_unix_nano_epoch",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_status_code",
+        "data_type": "Float64",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_status_description",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_status_message",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_trace_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "span_trace_state",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "telemetry.auto.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "telemetry.distro.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "telemetry.distro.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "telemetry.sdk.language",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "telemetry.sdk.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "telemetry.sdk.version",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "thread.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "thread.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "upstream_address",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "upstream_cluster",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "upstream_cluster.name",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "url.full",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "url.path",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "url.query",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "url.scheme",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "user.id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "user_agent",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "user_agent.original",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
+      },
+      {
+        "name": "zone",
+        "data_type": "Utf8",
+        "nullable": true,
+        "dict_id": 0,
+        "dict_is_ordered": false,
+        "metadata": {}
       }
-    ]
+    ],
+    "metadata": {}
   },
   "sample_rows": [
     {
-      "p_timestamp": "2025-01-15T14:32:01.234Z",
-      "trace_id": "abc123def456789a",
-      "span_id": "span_001",
-      "parent_span_id": "",
-      "service_name": "frontend",
-      "operation_name": "POST /api/checkout",
-      "duration_ms": 1847.3,
-      "status_code": "OK",
-      "http_method": "POST",
-      "http_status": 200,
-      "http_url": "/api/checkout"
+      "span_trace_id": "b42390b20f1b516d0da9776c838554db",
+      "span_span_id": "56edf76afa99153a",
+      "span_parent_span_id": "c8576c250101d660",
+      "span_name": "ingress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "SERVER",
+      "span_duration_ns": 15493000.0,
+      "span_status_code": 0.0,
+      "http.method": "GET",
+      "http.status_code": "200",
+      "http.url": "http://frontend-proxy:8080/api/products/9SIQT8TOJO",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:01.240Z",
-      "trace_id": "abc123def456789a",
-      "span_id": "span_002",
-      "parent_span_id": "span_001",
-      "service_name": "checkout-service",
-      "operation_name": "ProcessCheckout",
-      "duration_ms": 1790.1,
-      "status_code": "OK",
-      "http_method": "POST",
-      "http_status": 200,
-      "http_url": "/checkout/process"
+      "span_trace_id": "919a287f4bee7e6941015add205939d3",
+      "span_span_id": "96483e0165f141c0",
+      "span_parent_span_id": "1112e7b984d90426",
+      "span_name": "ingress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "SERVER",
+      "span_duration_ns": 6220000.0,
+      "span_status_code": 0.0,
+      "http.method": "GET",
+      "http.status_code": "200",
+      "http.url": "http://frontend-proxy:8080/api/products/1YMWWN1N4O",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:01.245Z",
-      "trace_id": "abc123def456789a",
-      "span_id": "span_003",
-      "parent_span_id": "span_002",
-      "service_name": "payment-service",
-      "operation_name": "ProcessPayment",
-      "duration_ms": 1203.4,
-      "status_code": "OK",
-      "http_method": "POST",
-      "http_status": 200,
-      "http_url": "/payment/process"
+      "span_trace_id": "88018dadfcfcc594764758444af6c8a6",
+      "span_span_id": "3251a54acb9a34d0",
+      "span_parent_span_id": "64cff923a07a290d",
+      "span_name": "ingress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "SERVER",
+      "span_duration_ns": 11209000.0,
+      "span_status_code": 0.0,
+      "http.method": "POST",
+      "http.status_code": "200",
+      "http.url": "http://frontend-proxy:8080/api/cart",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:01.250Z",
-      "trace_id": "abc123def456789a",
-      "span_id": "span_004",
-      "parent_span_id": "span_002",
-      "service_name": "cart-service",
-      "operation_name": "GetCart",
-      "duration_ms": 142.7,
-      "status_code": "OK",
-      "http_method": "GET",
-      "http_status": 200,
-      "http_url": "/cart/items"
+      "span_trace_id": "88018dadfcfcc594764758444af6c8a6",
+      "span_span_id": "0446386e34e70ad9",
+      "span_parent_span_id": "2c365b09c4a5eb2f",
+      "span_name": "ingress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "SERVER",
+      "span_duration_ns": 11151000.0,
+      "span_status_code": 0.0,
+      "http.method": "GET",
+      "http.status_code": "200",
+      "http.url": "http://frontend-proxy:8080/api/products/L9ECAV7KIM",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:02.100Z",
-      "trace_id": "abc123def456789a",
-      "span_id": "span_005",
-      "parent_span_id": "span_002",
-      "service_name": "shipping-service",
-      "operation_name": "CalculateShipping",
-      "duration_ms": 287.2,
-      "status_code": "OK",
-      "http_method": "POST",
-      "http_status": 200,
-      "http_url": "/shipping/calculate"
+      "span_trace_id": "b42390b20f1b516d0da9776c838554db",
+      "span_span_id": "a996cf83c3986311",
+      "span_parent_span_id": "56edf76afa99153a",
+      "span_name": "router frontend egress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "CLIENT",
+      "span_duration_ns": 15407000.0,
+      "span_status_code": 0.0,
+      "http.status_code": "200",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:05.500Z",
-      "trace_id": "def789abc123456b",
-      "span_id": "span_010",
-      "parent_span_id": "",
-      "service_name": "frontend",
-      "operation_name": "GET /api/products",
-      "duration_ms": 234.5,
-      "status_code": "OK",
-      "http_method": "GET",
-      "http_status": 200,
-      "http_url": "/api/products"
+      "span_trace_id": "919a287f4bee7e6941015add205939d3",
+      "span_span_id": "8cd17f097ad22cd2",
+      "span_parent_span_id": "96483e0165f141c0",
+      "span_name": "router frontend egress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "CLIENT",
+      "span_duration_ns": 6006000.0,
+      "span_status_code": 0.0,
+      "http.status_code": "200",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:08.200Z",
-      "trace_id": "789abc123def456c",
-      "span_id": "span_020",
-      "parent_span_id": "",
-      "service_name": "frontend",
-      "operation_name": "POST /api/checkout",
-      "duration_ms": 5234.8,
-      "status_code": "ERROR",
-      "http_method": "POST",
-      "http_status": 504,
-      "http_url": "/api/checkout"
+      "span_trace_id": "c8c6825224ba9a89bec162f5844c4284",
+      "span_span_id": "4983efd3d7277ad3",
+      "span_parent_span_id": "8c90b9a2538e1f56",
+      "span_name": "router frontend egress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "CLIENT",
+      "span_duration_ns": 14407000.0,
+      "span_status_code": 0.0,
+      "http.status_code": "200",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     },
     {
-      "p_timestamp": "2025-01-15T14:32:08.210Z",
-      "trace_id": "789abc123def456c",
-      "span_id": "span_021",
-      "parent_span_id": "span_020",
-      "service_name": "checkout-service",
-      "operation_name": "ProcessCheckout",
-      "duration_ms": 5180.2,
-      "status_code": "ERROR",
-      "http_method": "POST",
-      "http_status": 504,
-      "http_url": "/checkout/process"
+      "span_trace_id": "88018dadfcfcc594764758444af6c8a6",
+      "span_span_id": "9b5d250a0ce20f2b",
+      "span_parent_span_id": "3251a54acb9a34d0",
+      "span_name": "router frontend egress",
+      "service.name": "frontend-proxy",
+      "span_kind_description": "CLIENT",
+      "span_duration_ns": 11015000.0,
+      "span_status_code": 0.0,
+      "http.status_code": "200",
+      "p_timestamp": "2026-02-06T06:33:59.928"
     }
   ]
 }

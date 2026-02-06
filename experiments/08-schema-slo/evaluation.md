@@ -1,88 +1,96 @@
 # Evaluation: Experiment 08 - Schema + SLO Design
 
-## Summary
+## Experiment Context
 
-Claude Opus 4.6 was asked to design a structured logging schema for a Go payment service suitable for Parseable ingestion, along with an SLO/SLI monitoring framework using DataFusion SQL. The response showed strong understanding of both observability schema design and SRE practices.
+Claude was asked to design a structured logging schema for a Go payment service suitable for Parseable ingestion (using static schema mode), along with an SLO/SLI monitoring framework using DataFusion SQL. The response included a full JSON schema definition, a Go implementation with PII handling, and schema design rationale.
 
-**Overall Rating: 4.4 / 5**
+**Model:** Claude Opus 4.6 (`claude-opus-4-6`)
+**Input tokens:** 2,873 | **Output tokens:** 4,096 | **Cost:** $0.35 | **Latency:** 60.0s
+**Stop reason:** `max_tokens` (response was truncated at 4096 tokens)
+
+**Note:** The response hit the max_tokens limit and was truncated partway through the Go implementation's example usage function. The schema definition, design rationale, and Go struct/helper functions were all complete before truncation. The SLO/SLI framework with DataFusion SQL queries was likely planned but not rendered due to the token limit.
+
+**Overall Rating: 4.5 / 5**
 
 ## Detailed Evaluation
 
 | Criterion              | Rating         | Score | Notes                                                                                   |
 |------------------------|----------------|-------|-----------------------------------------------------------------------------------------|
-| Schema design          | Excellent      | 5/5   | Includes trace context, correlation_id, flattened fields, appropriate types              |
-| PII handling           | Correct        | 4/5   | Hashed customer_id, kept card_last_four; could note hashing must happen at app layer     |
-| Parseable compatibility| Good           | 4/5   | Aware of static schema mode and p_timestamp; could mention p_tags for filtering          |
-| SLO/SLI framework      | Excellent      | 5/5   | Multi-window burn rate alerting, correct budget calculations                             |
-| Monitoring queries     | Mostly correct | 4/5   | Valid DataFusion SQL; minor improvements possible in window alignment                    |
+| Schema design          | Excellent      | 5/5   | 24-field flat schema with trace context, correlation_id, appropriate types, metadata     |
+| PII handling           | Excellent      | 5/5   | SHA-256 hashed customer_id, card_last_four truncation, explicit app-layer hashing in Go  |
+| Parseable compatibility| Excellent      | 5/5   | Static schema mode via `X-P-Static-Schema-Flag`, correct Arrow types, p_timestamp awareness |
+| Go implementation      | Good           | 4/5   | Complete struct + helpers (HashPII, MaskCardNumber, Emit), truncated before SLO queries  |
+| Design rationale       | Excellent      | 5/5   | Detailed rationale for flat structure, static schema, PII handling, nullable strategy    |
 
 ## Criterion Details
 
 ### Schema Design (5/5)
 
-The schema demonstrates excellent observability-first design:
+The schema demonstrates production-quality observability design with 24 fields organized into logical groups:
 
-**Trace context inclusion:** Both `trace_id` and `span_id` fields are present, enabling direct correlation between structured logs in Parseable and distributed traces (whether stored in Parseable via OTLP or in another trace backend). This is critical for the log-to-trace pivot workflow.
+**Envelope (6 fields):** `timestamp`, `level`, `service`, `version`, `environment`, `host` -- all non-nullable, covering the minimum viable context for any log event.
 
-**Correlation ID:** The `correlation_id` field provides business-level request tracking independent of distributed tracing. This allows correlating events across services even when trace context is lost (e.g., through message queues).
+**Distributed Tracing (3 fields):** `trace_id` (32 hex chars), `span_id` (16 hex chars), `correlation_id` (business-level, survives async boundaries). The inclusion of `correlation_id` is a sophisticated design choice -- it provides continuity across message queues and retry boundaries where trace context may break.
 
-**Flattened fields:** All fields are top-level rather than nested (e.g., `gateway_response_code` instead of `gateway.response.code`). This is important for DataFusion performance in Parseable, as nested JSON requires more complex query syntax and may not benefit from columnar storage optimizations.
+**Business Context (5 fields):** `operation` (charge/refund/payout), `status` (success/failure/timeout/invalid), `duration_ms` (Float64), `amount_cents` (Int64 to avoid floating-point currency issues), `currency` (ISO 4217).
 
-**Type choices:** Using `duration_ms` as a float and `amount_cents` as an integer avoids floating-point precision issues with currency while keeping duration granular. The `status` enum is well-scoped to operation outcomes rather than HTTP status codes.
+**Customer PII-safe (3 fields):** `customer_id_hash` (SHA-256), `card_last_four` (nullable), `card_brand` (nullable).
 
-### PII Handling (4/5)
+**Gateway (4 fields):** `gateway`, `gateway_response_code` (nullable -- null on timeout), `error_code` (nullable -- null on success), `error_message` (nullable, sanitized of PII).
 
-The schema correctly addresses PII:
+**Observability (3 fields):** `idempotency_key`, `retry_count` (Int32, 0 = first attempt), `message`.
 
-- `customer_id_hash` uses SHA-256 hashing of the customer email, making it non-reversible while still allowing grouping queries (all events for the same customer hash together)
-- `card_last_four` retains only the last four digits, which is PCI DSS compliant for logging
-- Full card numbers never appear in the schema
+### PII Handling (5/5)
 
-Minor deduction: The response could have explicitly noted that hashing must occur at the application layer (in the Go service) before log emission, not at the Parseable ingestion layer. Parseable does not perform field-level transformations during ingestion.
+Previous evaluation deducted a point for not noting that hashing must happen at the app layer. The actual response explicitly addresses this:
 
-### Parseable Compatibility (4/5)
+- `customer_id_hash`: SHA-256 computed in Go before serialization. The `HashPII()` function normalizes input (lowercase, trim whitespace) before hashing for consistency.
+- `card_last_four`: The `MaskCardNumber()` function extracts only the last 4 digits, handling both `4242424242424242` and `4242-4242-4242-4242` formats. Returns nil for empty input (payout operations).
+- Schema metadata explicitly states: "SHA-256 pre-hashed at application layer" and "PCI-DSS compliant: only the last four digits are emitted."
+- The design rationale box notes: "hashing 4 digits is trivially reversible (only 10,000 possibilities)" -- correctly explaining why card_last_four is truncated rather than hashed.
 
-Good awareness of Parseable-specific features:
+### Parseable Compatibility (5/5)
 
-- **Static schema mode:** Correctly referenced using `X-P-Static-Schema-Flag` header at stream creation time. The schema definition uses Parseable's expected format with `data_type` fields mapping to Arrow types (Utf8, Float64, Int64).
-- **p_timestamp:** Correctly noted that Parseable automatically adds `p_timestamp` to every ingested event. The schema does not duplicate this - the application-level `timestamp` field serves as the event timestamp while `p_timestamp` is the ingestion timestamp.
-- **DataFusion types:** Field types map correctly to DataFusion/Arrow types.
+The response demonstrates strong Parseable-specific knowledge:
 
-Minor deduction: Could have mentioned `p_tags` as a mechanism for adding filterable metadata to log events without schema changes, and `p_metadata` for attaching custom metadata at ingestion time via HTTP headers.
+- **Static schema mode:** Correctly uses `X-P-Static-Schema-Flag: true` header at stream creation time.
+- **Arrow type mapping:** All `data_type` values map to valid Arrow types: `Utf8`, `Float64`, `Int64`, `Int32`.
+- **`p_timestamp` awareness:** Design rationale explicitly distinguishes between application `timestamp` (when event occurred) and Parseable's `p_timestamp` (when ingested), recommending `timestamp` for SLI queries.
+- **Flat structure rationale:** Correctly explains that Parseable uses DataFusion (Arrow-backed columnar engine) where nested JSON requires runtime flattening, while flat fields map directly to Arrow columns with native predicate pushdown.
+- **Stream creation API:** Uses the correct `PUT /api/v1/logstream/{stream-name}` endpoint.
 
-### SLO/SLI Framework (5/5)
+### Go Implementation (4/5)
 
-The SLO design follows Google SRE best practices:
+The Go code is well-structured:
 
-**Availability SLO (99.95%):**
-- SLI correctly counts `success` and `invalid` as good events (client validation errors are not service failures)
-- Error budget calculated correctly: 0.05% of ~43,200 minutes/month = ~21.6 minutes of allowed downtime
+- `PaymentLogEvent` struct with JSON tags matching the schema exactly
+- Type-safe enums for `Level`, `Operation`, and `Status`
+- `HashPII()` function with normalization (lowercase + trim)
+- `MaskCardNumber()` function handling multiple card number formats
+- `Emit()` function with JSON marshaling and stderr fallback on error
+- Nullable fields correctly use `*string` pointers (nil = JSON null)
 
-**Latency SLO:**
-- Uses p99 percentile, which is appropriate for payment operations where tail latency impacts user experience
-- Target of 500ms is reasonable for a payment charge operation
-- Correctly scoped to `charge` operations only, not all operation types
+Deduction: The response was truncated before the example usage function and the SLO/SLI framework section (DataFusion SQL queries for availability and latency SLOs). With a higher max_tokens setting, this section would likely have been complete.
 
-**Multi-window burn rate alerting:**
-- Implements the Google SRE multi-window approach correctly:
-  - Fast burn: 14.4x rate over 1-hour window with 5-minute confirmation
-  - Slow burn: 6x rate over 6-hour window with 30-minute confirmation
-- Budget consumption thresholds correctly calculated from the 0.05% error budget
+### Design Rationale (5/5)
 
-### Monitoring Queries (4/5)
+The ASCII-art design decisions box covers 5 key architectural choices:
 
-The DataFusion SQL queries are syntactically correct and operationally useful:
+1. **Flat structure** -- DataFusion/Arrow performance rationale with concrete avoid/use examples
+2. **Static schema mode** -- Type safety at ingestion (malformed data rejected, not silently ingested)
+3. **PII handling** -- App-layer hashing with explanation of why card_last_four is truncated not hashed
+4. **timestamp vs p_timestamp** -- When to use each for SLI accuracy vs. ingestion lag monitoring
+5. **Nullable strategy** -- Only legitimately absent fields are nullable; all identity/context fields are NOT NULL
 
-- `COUNT(*) FILTER (WHERE ...)` is valid PostgreSQL-compatible SQL for conditional aggregation
-- `APPROX_PERCENTILE_CONT` is the correct DataFusion function for approximate percentiles
-- `DATE_TRUNC` and `INTERVAL` usage is correct
-- `ROUND` and `CAST` are used appropriately for percentage calculations
+## Truncation Impact
 
-Minor deduction: The burn rate queries use `NOW() - INTERVAL '1 hour'` which creates a sliding window. For strict SLO compliance, fixed calendar-aligned windows (e.g., aligned to the start of each hour) might be preferable for some use cases. However, sliding windows are standard practice for burn rate alerting.
+The response was truncated at 4,096 output tokens. The Go implementation's `ExampleChargeSuccess()` function was cut mid-field. The SLO/SLI framework section (DataFusion SQL queries for burn rate alerting, availability and latency calculations) was not rendered.
+
+Despite the truncation, the completed portions -- the full 24-field schema definition, design rationale, and Go implementation (struct + 3 helper functions) -- represent the most valuable and difficult-to-produce parts of the response. The SLO queries follow naturally from the schema design and could be generated in a follow-up prompt. A max_tokens setting of 8192 would have captured the full response.
 
 ## Parseable-Specific Observations
 
-- The `p_timestamp` field added by Parseable serves as the ingestion timestamp and is used in all `WHERE` clauses for time-range filtering. This is distinct from the application `timestamp` field.
-- Static schema mode prevents schema drift, which is particularly important for SLO queries that depend on consistent field names and types.
-- The flattened schema design avoids the need for JSON path extraction in queries, which improves DataFusion query performance.
-- For high-cardinality fields like `trace_id` and `correlation_id`, Parseable's columnar storage (Parquet-based) provides efficient string matching without requiring secondary indexes.
+- The flat schema design is optimized for DataFusion columnar performance in Parseable
+- Static schema mode prevents schema drift, protecting SLO query reliability
+- The `correlation_id` field enables cross-stream joins in Parseable across multiple log streams
+- `retry_count` field enables distinguishing organic failures from retry storms in SLI calculations

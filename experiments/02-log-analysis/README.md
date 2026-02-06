@@ -37,7 +37,7 @@ LIMIT 200
 
 ### Using Keystone (production workflow)
 
-In production, this analysis runs through Keystone directly in Parseable's Prism UI. Keystone orchestrates an LLM (which could be Claude) with automatic schema resolution:
+In production, this analysis runs through Keystone (available in Parseable Cloud and Enterprise editions) directly in Parseable's Prism UI. Keystone orchestrates an LLM (which could be Claude) with automatic schema resolution:
 > "What anomalies are in the checkout logs from the last hour?"
 
 The experiments here test the raw LLM capability; Keystone is how that capability is delivered to users with built-in context.

@@ -1,0 +1,10 @@
+{
+  "experiment": "03-query-generation",
+  "model": "claude-opus-4-6",
+  "timestamp": "20260206T064525Z",
+  "input_tokens": 18679,
+  "output_tokens": 1656,
+  "estimated_cost_usd": 0.404385,
+  "elapsed_seconds": 31.03,
+  "stop_reason": "end_turn"
+}
