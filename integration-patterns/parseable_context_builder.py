@@ -2,8 +2,7 @@
 Parseable Context Builder
 
 Helper module for gathering observability context from Parseable to feed
-into Claude prompts. All queries use DataFusion SQL syntax via the
-Parseable REST API.
+into Claude prompts. All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine, via the REST API.
 
 Usage:
     from parseable_context_builder import ParseableContext

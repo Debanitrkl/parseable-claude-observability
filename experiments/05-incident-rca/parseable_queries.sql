@@ -1,6 +1,6 @@
 -- Experiment 05: Incident RCA
 -- SQL queries to extract incident data from Parseable log streams
--- All SQL uses DataFusion syntax (Parseable's query engine)
+-- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
 
 -- =============================================================================
 -- Extract error logs from the payment service during the incident

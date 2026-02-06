@@ -98,7 +98,7 @@ fi
 mkdir -p "$(dirname "$OUTPUT")"
 
 # ---------------------------------------------------------------------------
-# Build SQL query (DataFusion syntax)
+# Build SQL query (PostgreSQL-compatible)
 # ---------------------------------------------------------------------------
 SQL="SELECT * FROM \"${STREAM}\" WHERE p_timestamp > NOW() - INTERVAL '${MINUTES} minutes' ORDER BY p_timestamp ASC LIMIT ${LIMIT}"
 

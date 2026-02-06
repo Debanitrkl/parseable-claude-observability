@@ -19,7 +19,7 @@ Schema:
 - http_status (INT) -- HTTP response status code
 - http_url (VARCHAR) -- request URL path
 
-Important: Use DataFusion SQL syntax. DataFusion uses APPROX_PERCENTILE_CONT (not quantile()),
+Important: Use PostgreSQL-compatible SQL supported by Parseable's DataFusion engine. Use APPROX_PERCENTILE_CONT (not quantile()),
 COUNT(*) (not count()), and INTERVAL '1 hour' (not INTERVAL 1 HOUR).
 ```
 
@@ -56,7 +56,7 @@ The query should:
 4. Order by slow span duration descending
 5. Limit to 20 results
 
-Use the "traces" log stream in Parseable. Use DataFusion SQL syntax:
+Use the "traces" log stream in Parseable. Use PostgreSQL-compatible SQL:
 - APPROX_PERCENTILE_CONT for percentiles
 - INTERVAL '1 hour' for time intervals
 - p_timestamp for the Parseable ingestion timestamp

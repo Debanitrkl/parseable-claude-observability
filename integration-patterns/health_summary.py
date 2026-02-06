@@ -93,7 +93,7 @@ def query_parseable(sql: str, minutes: int) -> list[dict]:
         return resp.json()
 
 
-# Saved health-check SQL queries (DataFusion syntax, using p_timestamp)
+# Saved health-check SQL queries (PostgreSQL-compatible, using p_timestamp)
 HEALTH_QUERIES = {
     "log_volume": {
         "description": "Log volume by level in the last interval",

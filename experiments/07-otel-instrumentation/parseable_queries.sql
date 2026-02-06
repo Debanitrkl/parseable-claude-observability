@@ -1,5 +1,5 @@
 -- Experiment 07: OTel Instrumentation - Parseable Trace Verification Queries
--- These queries use DataFusion SQL syntax and run against Parseable's trace stream.
+-- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
 
 -- 1. Verify traces are being received from the order-service
 --    Check that OTLP/HTTP exporter is successfully sending to Parseable

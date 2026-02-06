@@ -1,6 +1,6 @@
 -- Experiment 03: Query Generation
 -- Parseable schema retrieval and validation queries
--- All SQL uses DataFusion syntax (Parseable's query engine)
+-- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
 
 -- =============================================================================
 -- Step 1: Retrieve the schema from Parseable's API

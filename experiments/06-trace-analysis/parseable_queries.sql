@@ -1,6 +1,6 @@
 -- Experiment 06: Trace Analysis
 -- SQL queries to extract a specific trace from Parseable's traces log stream
--- All SQL uses DataFusion syntax (Parseable's query engine)
+-- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
 
 -- =============================================================================
 -- Extract a complete trace by trace_id

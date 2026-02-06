@@ -135,14 +135,14 @@ python scripts/run_experiment.py --all
 | **Prism UI** | Parseable's web-based UI for querying and visualization |
 | **Keystone** | Parseable's built-in AI assistant for natural language queries |
 | **`p_timestamp`** | Auto-added timestamp field on every ingested record |
-| **DataFusion SQL** | PostgreSQL-compatible SQL engine used by Parseable |
+| **DataFusion** | Apache Arrow's SQL query engine that powers Parseable's query layer |
 | **OTLP ingestion** | Native OpenTelemetry Protocol HTTP endpoint on port 8000 |
 
-## SQL Syntax Reference (DataFusion)
+## SQL Syntax Reference (PostgreSQL-compatible)
 
-All SQL queries in this repository use DataFusion syntax (PostgreSQL-compatible):
+All SQL queries in this repository use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine:
 
-| Function | DataFusion Syntax | Notes |
+| Function | SQL Syntax | Notes |
 |----------|------------------|-------|
 | Percentile | `APPROX_PERCENTILE_CONT(col, 0.99)` | Approximate percentile |
 | Count | `COUNT(*)` | Standard SQL count |

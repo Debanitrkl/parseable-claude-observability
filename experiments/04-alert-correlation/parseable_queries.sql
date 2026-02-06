@@ -1,6 +1,6 @@
 -- Experiment 04: Alert Correlation
 -- Supporting SQL queries to pull context from Parseable during an alert storm
--- All SQL uses DataFusion syntax (Parseable's query engine)
+-- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
 
 -- =============================================================================
 -- During an alert storm, these queries pull supporting data from Parseable

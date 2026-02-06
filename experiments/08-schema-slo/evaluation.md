@@ -73,7 +73,7 @@ The SLO design follows Google SRE best practices:
 
 The DataFusion SQL queries are syntactically correct and operationally useful:
 
-- `COUNT(*) FILTER (WHERE ...)` is valid DataFusion syntax for conditional aggregation
+- `COUNT(*) FILTER (WHERE ...)` is valid PostgreSQL-compatible SQL for conditional aggregation
 - `APPROX_PERCENTILE_CONT` is the correct DataFusion function for approximate percentiles
 - `DATE_TRUNC` and `INTERVAL` usage is correct
 - `ROUND` and `CAST` are used appropriately for percentage calculations

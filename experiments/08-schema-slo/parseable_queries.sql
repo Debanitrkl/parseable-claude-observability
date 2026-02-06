@@ -1,5 +1,5 @@
 -- Experiment 08: Schema + SLO Design - Parseable Monitoring Queries
--- All queries use DataFusion SQL syntax compatible with Parseable.
+-- All queries use PostgreSQL-compatible SQL, executed by Parseable's DataFusion query engine.
 
 -- =============================================================================
 -- STREAM CREATION

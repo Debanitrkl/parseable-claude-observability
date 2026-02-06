@@ -11,7 +11,7 @@ Claude Opus 4.6 was evaluated as a multi-turn on-call copilot during a simulated
 | Criterion                   | Rating    | Score | Notes                                                                          |
 |-----------------------------|-----------|-------|--------------------------------------------------------------------------------|
 | Runbook structure           | Correct   | 5/5   | Clear numbered steps, prioritized from most to least likely cause              |
-| Parseable SQL queries       | Correct   | 5/5   | Valid DataFusion syntax, relevant to the incident                              |
+| Parseable SQL queries       | Correct   | 5/5   | Valid PostgreSQL-compatible SQL, relevant to the incident                       |
 | Infrastructure commands     | Correct   | 5/5   | Real diagnostic commands: psql, kubectl, pg_stat_activity                      |
 | Turn 2 analysis             | Excellent | 5/5   | Correctly identified transaction leak from idle-in-transaction + payment timeout|
 | Turn 3 context maintenance  | Good      | 4/5   | Maintained full context; deploy correlation was well-handled                   |
@@ -31,7 +31,7 @@ Claude generated a well-structured diagnostic runbook with the following strengt
 - `kubectl` commands for pod-level diagnostics (`kubectl top pods`, `kubectl logs`)
 - Cross-service correlation queries spanning checkout and payment log streams
 
-**Parseable-specific awareness:** Queries used correct DataFusion syntax:
+**Parseable-specific awareness:** Queries used correct PostgreSQL-compatible SQL:
 - `COUNT(*) FILTER (WHERE ...)` for conditional aggregation
 - `DATE_TRUNC('minute', p_timestamp)` for time bucketing
 - `NOW() - INTERVAL '30 minutes'` for time range filtering
@@ -90,7 +90,7 @@ The model did not lose any context between turns and correctly built upon previo
 
 ## Parseable-Specific Observations
 
-- All SQL queries used valid DataFusion syntax compatible with Parseable
+- All SQL queries used valid PostgreSQL-compatible SQL for Parseable's DataFusion engine
 - Cross-stream queries (checkout_logs and payment_logs) demonstrate Parseable's ability to correlate across log streams
 - The `p_timestamp` field was correctly used for time-range filtering in all queries
 - The curl command for log stream stats API (`/api/v1/logstream/{stream}/stats`) is a valid Parseable API endpoint

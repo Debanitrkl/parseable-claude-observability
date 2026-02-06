@@ -146,7 +146,7 @@ The threshold subquery was corrected to use a fixed threshold (`duration_ms > 10
 
 1. **ClickHouse contamination is real.** The model's training data includes significant ClickHouse SQL examples, and it will occasionally produce ClickHouse syntax when generating analytical queries. Explicit prompting about the SQL dialect helps but does not fully prevent this.
 
-2. **Self-correction is fast.** When told the syntax was wrong and why, the model immediately produced the correct DataFusion syntax without further prompting.
+2. **Self-correction is fast.** When told the syntax was wrong and why, the model immediately produced correct PostgreSQL-compatible SQL without further prompting.
 
 3. **PromQL generation was clean.** The model has strong PromQL knowledge and produced a production-ready alerting rule on the first attempt.
 
