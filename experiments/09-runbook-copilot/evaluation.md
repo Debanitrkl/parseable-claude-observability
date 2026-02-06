@@ -68,7 +68,7 @@ After the pool recovered, Claude helped trace the issue to the v2.14.3 deploy:
 **Areas for improvement:**
 - Could have suggested checking if the issue is reproducible in staging before the next deploy
 - Could have recommended a canary deploy strategy for the fix
-- Did not mention Parseable's Keystone feature as an alternative interface for this type of on-call investigation workflow
+- Did not mention Parseable's Keystone as the production interface for delivering these copilot capabilities to on-call engineers
 
 Minor deduction for not explicitly warning about the risk of force-killing active transactions (the engineer's `pg_terminate_backend` call could interrupt legitimate active queries).
 
@@ -94,11 +94,11 @@ The model did not lose any context between turns and correctly built upon previo
 - Cross-stream queries (checkout_logs and payment_logs) demonstrate Parseable's ability to correlate across log streams
 - The `p_timestamp` field was correctly used for time-range filtering in all queries
 - The curl command for log stream stats API (`/api/v1/logstream/{stream}/stats`) is a valid Parseable API endpoint
-- In a production setting, Parseable's Keystone feature could serve as the copilot interface, allowing the engineer to query logs and get AI-assisted analysis directly within the Parseable UI rather than switching between a chat interface and the Parseable console
+- In production, Parseable's Keystone serves as the primary copilot interface, orchestrating the same LLM capabilities tested here with built-in schema awareness -- engineers query logs and get AI-assisted analysis directly in the Prism UI without constructing prompts or switching tools
 
 ## Recommendations for Improvement
 
 1. **Rollback risk assessment:** When suggesting `pg_terminate_backend`, note that this forcibly terminates connections and could interrupt active queries
-2. **Keystone mention:** Reference Parseable's Keystone as an alternative copilot interface for on-call workflows
+2. **Keystone mention:** Reference Parseable's Keystone as the production interface for delivering these copilot capabilities to on-call engineers
 3. **Post-incident:** Suggest creating the missing runbook at the dead wiki link to prevent future 404s
 4. **Prevention:** Recommend adding connection pool monitoring with lower thresholds (e.g., alert at 80% pool utilization as a warning before exhaustion)

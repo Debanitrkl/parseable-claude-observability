@@ -133,7 +133,7 @@ python scripts/run_experiment.py --all
 |------|-------------|
 | **Log stream** | A named collection of log data in Parseable (similar to a table) |
 | **Prism UI** | Parseable's web-based UI for querying and visualization |
-| **Keystone** | Parseable's built-in AI assistant for natural language queries |
+| **Keystone** | Parseable's AI orchestration layer -- uses LLMs (Claude, GPT-4, Bedrock) with built-in schema awareness to answer natural language queries via three internal agents (Intent, SQL, Visualization) |
 | **`p_timestamp`** | Auto-added timestamp field on every ingested record |
 | **DataFusion** | Apache Arrow's SQL query engine that powers Parseable's query layer |
 | **OTLP ingestion** | Native OpenTelemetry Protocol HTTP endpoint on port 8000 |

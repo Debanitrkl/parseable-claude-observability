@@ -35,12 +35,12 @@ ORDER BY p_timestamp DESC
 LIMIT 200
 ```
 
-### Using Keystone (comparison)
+### Using Keystone (production workflow)
 
-In Parseable's Prism UI, open Keystone and ask:
+In production, this analysis runs through Keystone directly in Parseable's Prism UI. Keystone orchestrates an LLM (which could be Claude) with automatic schema resolution:
 > "What anomalies are in the checkout logs from the last hour?"
 
-Compare Keystone's response to Claude's analysis.
+The experiments here test the raw LLM capability; Keystone is how that capability is delivered to users with built-in context.
 
 ## Expected Results
 

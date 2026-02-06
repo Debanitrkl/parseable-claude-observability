@@ -35,13 +35,15 @@ The model correctly generated the p99 latency query and PromQL alert on the firs
 
 All three queries ran successfully against a Parseable instance with the `traces` log stream.
 
-## Comparison: Parseable Keystone
+## How Keystone Delivers These Capabilities
 
-Parseable's Keystone feature provides a natural language query interface that converts plain English to SQL queries. This experiment highlights how an external LLM like Claude compares:
+Parseable's Keystone orchestrates LLMs (including Claude) to convert natural language to SQL queries in production. It adds value on top of the raw LLM capability tested here:
 
-- **Keystone** has the advantage of schema awareness built in -- it knows the log stream schema without being told.
-- **Claude** requires the schema to be provided in the prompt but can handle more complex multi-step reasoning (e.g., self-joins for trace correlation).
-- Both approaches benefit from DataFusion's SQL dialect; neither needs ClickHouse-specific syntax.
+- **Schema awareness:** Keystone's SQL agent automatically resolves log stream schemas, eliminating the need to provide schema context in prompts.
+- **Multi-agent orchestration:** Keystone coordinates Intent, SQL, and Visualization agents to deliver end-to-end answers in the Prism UI.
+- **Same underlying reasoning:** The SQL generation quality tested in this experiment is the same reasoning that powers Keystone's Text-to-SQL feature.
+
+A more meaningful comparison than "Keystone vs. raw API" is **specialized vs. general-purpose models** for observability. Purpose-built models like Datadog's Toto (a time-series foundation model trained on 750B observability data points) trade breadth for depth on narrow tasks like forecasting. General-purpose LLMs like Claude offer flexibility across SQL generation, log analysis, and trace reasoning.
 
 ## Token Usage
 
