@@ -1,0 +1,87 @@
+{
+  "experiment_id": "07-otel-instrumentation",
+  "input": {
+    "filename": "app.py",
+    "code": "import requests\nfrom flask import Flask, jsonify, request\n\napp = Flask(__name__)\n\nPAYMENT_SERVICE_URL = \"http://payment-service:5001\"\n\n\n@app.route(\"/health\")\ndef health():\n    return jsonify({\"status\": \"healthy\"})\n\n\n@app.route(\"/process\", methods=[\"POST\"])\ndef process_order():\n    data = request.get_json()\n    order_id = data.get(\"order_id\")\n    amount = data.get(\"amount\")\n\n    if not order_id or not amount:\n        return jsonify({\"error\": \"missing order_id or amount\"}), 400\n\n    resp = requests.post(\n        f\"{PAYMENT_SERVICE_URL}/charge\",\n        json={\"order_id\": order_id, \"amount\": amount},\n        timeout=5,\n    )\n\n    if resp.status_code != 200:\n        return jsonify({\"error\": \"payment failed\"}), 502\n\n    return jsonify({\"order_id\": order_id, \"status\": \"processed\"})\n\n\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", port=5000)"
+  },
+  "expected_output": {
+    "filename": "app.py",
+    "code": "import requests\nfrom flask import Flask, jsonify, request\n\nfrom opentelemetry import trace\nfrom opentelemetry.sdk.trace import TracerProvider\nfrom opentelemetry.sdk.trace.export import BatchSpanProcessor\nfrom opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter\nfrom opentelemetry.sdk.resources import Resource\nfrom opentelemetry.semconv.resource import ResourceAttributes\nfrom opentelemetry.instrumentation.flask import FlaskInstrumentor\nfrom opentelemetry.instrumentation.requests import RequestsInstrumentor\n\n# Configure resource attributes\nresource = Resource.create({\n    ResourceAttributes.SERVICE_NAME: \"order-service\",\n    ResourceAttributes.SERVICE_VERSION: \"1.0.0\",\n    ResourceAttributes.DEPLOYMENT_ENVIRONMENT: \"production\",\n})\n\n# Configure tracer provider with OTLP/HTTP exporter to Parseable\nprovider = TracerProvider(resource=resource)\nexporter = OTLPSpanExporter(\n    endpoint=\"http://parseable:8000/v1/traces\"\n)\nprovider.add_span_processor(BatchSpanProcessor(exporter))\ntrace.set_tracer_provider(provider)\n\ntracer = trace.get_tracer(__name__)\n\napp = Flask(__name__)\n\n# Auto-instrument Flask and Requests\nFlaskInstrumentor().instrument_app(app)\nRequestsInstrumentor().instrument()\n\nPAYMENT_SERVICE_URL = \"http://payment-service:5001\"\n\n\n@app.route(\"/health\")\ndef health():\n    return jsonify({\"status\": \"healthy\"})\n\n\n@app.route(\"/process\", methods=[\"POST\"])\ndef process_order():\n    data = request.get_json()\n    order_id = data.get(\"order_id\")\n    amount = data.get(\"amount\")\n\n    if not order_id or not amount:\n        return jsonify({\"error\": \"missing order_id or amount\"}), 400\n\n    with tracer.start_as_current_span(\"process-payment\") as span:\n        span.set_attribute(\"order.id\", order_id)\n        span.set_attribute(\"order.amount\", float(amount))\n\n        resp = requests.post(\n            f\"{PAYMENT_SERVICE_URL}/charge\",\n            json={\"order_id\": order_id, \"amount\": amount},\n            timeout=5,\n        )\n\n        span.set_attribute(\"payment.status_code\", resp.status_code)\n\n        if resp.status_code != 200:\n            span.set_attribute(\"error\", True)\n            return jsonify({\"error\": \"payment failed\"}), 502\n\n    return jsonify({\"order_id\": order_id, \"status\": \"processed\"})\n\n\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", port=5000)"
+  },
+  "expected_requirements": [
+    "flask",
+    "requests",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-exporter-otlp-proto-http",
+    "opentelemetry-instrumentation-flask",
+    "opentelemetry-instrumentation-requests"
+  ],
+  "trace_sample": {
+    "resourceSpans": [
+      {
+        "resource": {
+          "attributes": [
+            { "key": "service.name", "value": { "stringValue": "order-service" } },
+            { "key": "service.version", "value": { "stringValue": "1.0.0" } },
+            { "key": "deployment.environment", "value": { "stringValue": "production" } }
+          ]
+        },
+        "scopeSpans": [
+          {
+            "scope": { "name": "opentelemetry.instrumentation.flask" },
+            "spans": [
+              {
+                "traceId": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+                "spanId": "1a2b3c4d5e6f7a8b",
+                "name": "POST /process",
+                "kind": "SPAN_KIND_SERVER",
+                "startTimeUnixNano": "1706140800000000000",
+                "endTimeUnixNano": "1706140800150000000",
+                "attributes": [
+                  { "key": "http.method", "value": { "stringValue": "POST" } },
+                  { "key": "http.route", "value": { "stringValue": "/process" } },
+                  { "key": "http.status_code", "value": { "intValue": "200" } }
+                ]
+              }
+            ]
+          },
+          {
+            "scope": { "name": "__main__" },
+            "spans": [
+              {
+                "traceId": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+                "spanId": "2b3c4d5e6f7a8b9c",
+                "parentSpanId": "1a2b3c4d5e6f7a8b",
+                "name": "process-payment",
+                "kind": "SPAN_KIND_INTERNAL",
+                "attributes": [
+                  { "key": "order.id", "value": { "stringValue": "ord-12345" } },
+                  { "key": "order.amount", "value": { "doubleValue": 49.99 } },
+                  { "key": "payment.status_code", "value": { "intValue": "200" } }
+                ]
+              }
+            ]
+          },
+          {
+            "scope": { "name": "opentelemetry.instrumentation.requests" },
+            "spans": [
+              {
+                "traceId": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+                "spanId": "3c4d5e6f7a8b9c0d",
+                "parentSpanId": "2b3c4d5e6f7a8b9c",
+                "name": "POST",
+                "kind": "SPAN_KIND_CLIENT",
+                "attributes": [
+                  { "key": "http.method", "value": { "stringValue": "POST" } },
+                  { "key": "http.url", "value": { "stringValue": "http://payment-service:5001/charge" } },
+                  { "key": "http.status_code", "value": { "intValue": "200" } }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

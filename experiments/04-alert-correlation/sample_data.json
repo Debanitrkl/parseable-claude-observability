@@ -1,0 +1,271 @@
+{
+  "alert_storm": {
+    "window_start": "2025-01-15T14:30:02Z",
+    "window_end": "2025-01-15T14:34:30Z",
+    "total_alerts": 18,
+    "alerts": [
+      {
+        "id": 1,
+        "alert_name": "PaymentServiceLatencyHigh",
+        "fired_at": "2025-01-15T14:30:02Z",
+        "severity": "critical",
+        "service": "payment-service",
+        "description": "p99 latency for payment-service exceeded 2000ms (current: 4250ms)",
+        "labels": {
+          "service": "payment-service",
+          "namespace": "production",
+          "team": "payments"
+        },
+        "value": 4250
+      },
+      {
+        "id": 2,
+        "alert_name": "PaymentServiceErrorRate",
+        "fired_at": "2025-01-15T14:30:15Z",
+        "severity": "critical",
+        "service": "payment-service",
+        "description": "Error rate for payment-service exceeded 10% (current: 23.4%)",
+        "labels": {
+          "service": "payment-service",
+          "namespace": "production",
+          "team": "payments"
+        },
+        "value": 23.4
+      },
+      {
+        "id": 3,
+        "alert_name": "CheckoutDBPoolExhausted",
+        "fired_at": "2025-01-15T14:30:28Z",
+        "severity": "critical",
+        "service": "checkout-service",
+        "description": "Database connection pool utilization at 100% (48/48 connections in use)",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "team": "checkout",
+          "pool": "primary"
+        },
+        "value": 100
+      },
+      {
+        "id": 4,
+        "alert_name": "CheckoutLatencyHigh",
+        "fired_at": "2025-01-15T14:30:45Z",
+        "severity": "critical",
+        "service": "checkout-service",
+        "description": "p99 latency for checkout-service exceeded 3000ms (current: 8120ms)",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "team": "checkout"
+        },
+        "value": 8120
+      },
+      {
+        "id": 5,
+        "alert_name": "CheckoutErrorRate",
+        "fired_at": "2025-01-15T14:31:02Z",
+        "severity": "critical",
+        "service": "checkout-service",
+        "description": "Error rate for checkout-service exceeded 5% (current: 34.7%)",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "team": "checkout"
+        },
+        "value": 34.7
+      },
+      {
+        "id": 6,
+        "alert_name": "CartServiceTimeout",
+        "fired_at": "2025-01-15T14:31:15Z",
+        "severity": "warning",
+        "service": "cart-service",
+        "description": "Cart service experiencing timeouts calling checkout-service (timeout rate: 12.3%)",
+        "labels": {
+          "service": "cart-service",
+          "namespace": "production",
+          "team": "cart",
+          "dependency": "checkout-service"
+        },
+        "value": 12.3
+      },
+      {
+        "id": 7,
+        "alert_name": "FrontendErrorRate",
+        "fired_at": "2025-01-15T14:31:28Z",
+        "severity": "critical",
+        "service": "frontend",
+        "description": "Frontend error rate exceeded 5% (current: 18.2%)",
+        "labels": {
+          "service": "frontend",
+          "namespace": "production",
+          "team": "frontend"
+        },
+        "value": 18.2
+      },
+      {
+        "id": 8,
+        "alert_name": "SLOBurnRateCheckout",
+        "fired_at": "2025-01-15T14:31:42Z",
+        "severity": "critical",
+        "service": "checkout-service",
+        "description": "Checkout SLO error budget burn rate exceeded 14.4x (1h window)",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "slo": "checkout-availability",
+          "window": "1h"
+        },
+        "value": 14.4
+      },
+      {
+        "id": 9,
+        "alert_name": "SLOBurnRateFrontend",
+        "fired_at": "2025-01-15T14:31:55Z",
+        "severity": "warning",
+        "service": "frontend",
+        "description": "Frontend SLO error budget burn rate exceeded 6.2x (1h window)",
+        "labels": {
+          "service": "frontend",
+          "namespace": "production",
+          "slo": "frontend-availability",
+          "window": "1h"
+        },
+        "value": 6.2
+      },
+      {
+        "id": 10,
+        "alert_name": "CheckoutCPUHigh",
+        "fired_at": "2025-01-15T14:32:05Z",
+        "severity": "warning",
+        "service": "checkout-service",
+        "description": "Checkout service CPU utilization above 85% (current: 92.3%)",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "team": "checkout",
+          "pod": "checkout-service-7b9f4d6c8-x2k9m"
+        },
+        "value": 92.3
+      },
+      {
+        "id": 11,
+        "alert_name": "PaymentCircuitBreakerOpen",
+        "fired_at": "2025-01-15T14:32:18Z",
+        "severity": "critical",
+        "service": "payment-service",
+        "description": "Circuit breaker for payment-gateway downstream is OPEN (failure rate: 89%)",
+        "labels": {
+          "service": "payment-service",
+          "namespace": "production",
+          "team": "payments",
+          "circuit": "payment-gateway",
+          "state": "open"
+        },
+        "value": 89
+      },
+      {
+        "id": 12,
+        "alert_name": "CheckoutGoroutineCount",
+        "fired_at": "2025-01-15T14:32:30Z",
+        "severity": "warning",
+        "service": "checkout-service",
+        "description": "Goroutine count for checkout-service exceeded 10000 (current: 14832)",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "team": "checkout"
+        },
+        "value": 14832
+      },
+      {
+        "id": 13,
+        "alert_name": "FrontendLatencyHigh",
+        "fired_at": "2025-01-15T14:32:45Z",
+        "severity": "warning",
+        "service": "frontend",
+        "description": "p99 latency for frontend exceeded 5000ms (current: 9340ms)",
+        "labels": {
+          "service": "frontend",
+          "namespace": "production",
+          "team": "frontend"
+        },
+        "value": 9340
+      },
+      {
+        "id": 14,
+        "alert_name": "EmailServiceQueueDepth",
+        "fired_at": "2025-01-15T14:33:00Z",
+        "severity": "warning",
+        "service": "email-service",
+        "description": "Email notification queue depth exceeded 5000 (current: 8234)",
+        "labels": {
+          "service": "email-service",
+          "namespace": "production",
+          "team": "notifications"
+        },
+        "value": 8234
+      },
+      {
+        "id": 15,
+        "alert_name": "ShippingServiceTimeout",
+        "fired_at": "2025-01-15T14:33:15Z",
+        "severity": "warning",
+        "service": "shipping-service",
+        "description": "Shipping service experiencing timeouts (timeout rate: 8.7%)",
+        "labels": {
+          "service": "shipping-service",
+          "namespace": "production",
+          "team": "shipping",
+          "dependency": "checkout-service"
+        },
+        "value": 8.7
+      },
+      {
+        "id": 16,
+        "alert_name": "RecommendationLatencyHigh",
+        "fired_at": "2025-01-15T14:33:30Z",
+        "severity": "warning",
+        "service": "recommendation-service",
+        "description": "Recommendation service p99 latency exceeded 1000ms (current: 2340ms)",
+        "labels": {
+          "service": "recommendation-service",
+          "namespace": "production",
+          "team": "ml"
+        },
+        "value": 2340
+      },
+      {
+        "id": 17,
+        "alert_name": "SLOBurnRateOverall",
+        "fired_at": "2025-01-15T14:34:00Z",
+        "severity": "critical",
+        "service": "platform",
+        "description": "Overall platform SLO burn rate exceeded 8.1x (1h window)",
+        "labels": {
+          "namespace": "production",
+          "slo": "platform-availability",
+          "window": "1h"
+        },
+        "value": 8.1
+      },
+      {
+        "id": 18,
+        "alert_name": "PodRestartCount",
+        "fired_at": "2025-01-15T14:34:30Z",
+        "severity": "warning",
+        "service": "checkout-service",
+        "description": "Pod checkout-service-7b9f4d6c8-x2k9m restarted 3 times in 5 minutes",
+        "labels": {
+          "service": "checkout-service",
+          "namespace": "production",
+          "team": "checkout",
+          "pod": "checkout-service-7b9f4d6c8-x2k9m",
+          "restart_count": 3
+        },
+        "value": 3
+      }
+    ]
+  }
+}

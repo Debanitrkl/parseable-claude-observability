@@ -1,0 +1,201 @@
+{
+  "schema": {
+    "stream_name": "traces",
+    "fields": [
+      {
+        "name": "p_timestamp",
+        "data_type": "Utf8",
+        "nullable": true,
+        "metadata": {
+          "description": "Ingestion timestamp assigned by Parseable"
+        }
+      },
+      {
+        "name": "trace_id",
+        "data_type": "Utf8",
+        "nullable": false,
+        "metadata": {
+          "description": "Distributed trace identifier"
+        }
+      },
+      {
+        "name": "span_id",
+        "data_type": "Utf8",
+        "nullable": false,
+        "metadata": {
+          "description": "Unique span identifier"
+        }
+      },
+      {
+        "name": "parent_span_id",
+        "data_type": "Utf8",
+        "nullable": true,
+        "metadata": {
+          "description": "Parent span identifier, empty for root spans"
+        }
+      },
+      {
+        "name": "service_name",
+        "data_type": "Utf8",
+        "nullable": false,
+        "metadata": {
+          "description": "Originating microservice name"
+        }
+      },
+      {
+        "name": "operation_name",
+        "data_type": "Utf8",
+        "nullable": false,
+        "metadata": {
+          "description": "Operation or endpoint name"
+        }
+      },
+      {
+        "name": "duration_ms",
+        "data_type": "Float64",
+        "nullable": false,
+        "metadata": {
+          "description": "Span duration in milliseconds"
+        }
+      },
+      {
+        "name": "status_code",
+        "data_type": "Utf8",
+        "nullable": false,
+        "metadata": {
+          "description": "Span status: OK, ERROR, UNSET"
+        }
+      },
+      {
+        "name": "http_method",
+        "data_type": "Utf8",
+        "nullable": true,
+        "metadata": {
+          "description": "HTTP method: GET, POST, PUT, DELETE"
+        }
+      },
+      {
+        "name": "http_status",
+        "data_type": "Int32",
+        "nullable": true,
+        "metadata": {
+          "description": "HTTP response status code"
+        }
+      },
+      {
+        "name": "http_url",
+        "data_type": "Utf8",
+        "nullable": true,
+        "metadata": {
+          "description": "Request URL path"
+        }
+      }
+    ]
+  },
+  "sample_rows": [
+    {
+      "p_timestamp": "2025-01-15T14:32:01.234Z",
+      "trace_id": "abc123def456789a",
+      "span_id": "span_001",
+      "parent_span_id": "",
+      "service_name": "frontend",
+      "operation_name": "POST /api/checkout",
+      "duration_ms": 1847.3,
+      "status_code": "OK",
+      "http_method": "POST",
+      "http_status": 200,
+      "http_url": "/api/checkout"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:01.240Z",
+      "trace_id": "abc123def456789a",
+      "span_id": "span_002",
+      "parent_span_id": "span_001",
+      "service_name": "checkout-service",
+      "operation_name": "ProcessCheckout",
+      "duration_ms": 1790.1,
+      "status_code": "OK",
+      "http_method": "POST",
+      "http_status": 200,
+      "http_url": "/checkout/process"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:01.245Z",
+      "trace_id": "abc123def456789a",
+      "span_id": "span_003",
+      "parent_span_id": "span_002",
+      "service_name": "payment-service",
+      "operation_name": "ProcessPayment",
+      "duration_ms": 1203.4,
+      "status_code": "OK",
+      "http_method": "POST",
+      "http_status": 200,
+      "http_url": "/payment/process"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:01.250Z",
+      "trace_id": "abc123def456789a",
+      "span_id": "span_004",
+      "parent_span_id": "span_002",
+      "service_name": "cart-service",
+      "operation_name": "GetCart",
+      "duration_ms": 142.7,
+      "status_code": "OK",
+      "http_method": "GET",
+      "http_status": 200,
+      "http_url": "/cart/items"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:02.100Z",
+      "trace_id": "abc123def456789a",
+      "span_id": "span_005",
+      "parent_span_id": "span_002",
+      "service_name": "shipping-service",
+      "operation_name": "CalculateShipping",
+      "duration_ms": 287.2,
+      "status_code": "OK",
+      "http_method": "POST",
+      "http_status": 200,
+      "http_url": "/shipping/calculate"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:05.500Z",
+      "trace_id": "def789abc123456b",
+      "span_id": "span_010",
+      "parent_span_id": "",
+      "service_name": "frontend",
+      "operation_name": "GET /api/products",
+      "duration_ms": 234.5,
+      "status_code": "OK",
+      "http_method": "GET",
+      "http_status": 200,
+      "http_url": "/api/products"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:08.200Z",
+      "trace_id": "789abc123def456c",
+      "span_id": "span_020",
+      "parent_span_id": "",
+      "service_name": "frontend",
+      "operation_name": "POST /api/checkout",
+      "duration_ms": 5234.8,
+      "status_code": "ERROR",
+      "http_method": "POST",
+      "http_status": 504,
+      "http_url": "/api/checkout"
+    },
+    {
+      "p_timestamp": "2025-01-15T14:32:08.210Z",
+      "trace_id": "789abc123def456c",
+      "span_id": "span_021",
+      "parent_span_id": "span_020",
+      "service_name": "checkout-service",
+      "operation_name": "ProcessCheckout",
+      "duration_ms": 5180.2,
+      "status_code": "ERROR",
+      "http_method": "POST",
+      "http_status": 504,
+      "http_url": "/checkout/process"
+    }
+  ]
+}

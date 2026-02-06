@@ -1,0 +1,74 @@
+{
+  "experiment_id": "09-runbook-copilot",
+  "alert_context": {
+    "alert_name": "CheckoutDBPoolExhausted",
+    "severity": "P1",
+    "service": "checkout-service",
+    "cluster": "prod-us-east-1",
+    "fired_at": "2025-01-25T03:42:00Z",
+    "description": "Database connection pool utilization at 100% (48/48 connections in use). New requests are being rejected with 'connection pool exhausted' errors.",
+    "affected_endpoints": [
+      "/api/v1/checkout",
+      "/api/v1/cart/finalize"
+    ],
+    "runbook_url": "https://wiki.internal/runbooks/db-pool-exhausted",
+    "runbook_status": "404 - not found"
+  },
+  "turn_2_results": {
+    "parseable_error_query": {
+      "description": "Recent errors from checkout log stream",
+      "results": {
+        "total_errors_30m": 847,
+        "error_type": "connection pool exhausted",
+        "error_rate_before": "0.1%",
+        "error_rate_after": "34%",
+        "error_rate_change_time": "2025-01-25T03:38:00Z",
+        "affected_endpoints": [
+          "/api/v1/checkout",
+          "/api/v1/cart/finalize"
+        ]
+      }
+    },
+    "psql_pg_stat_activity": {
+      "description": "PostgreSQL connection state breakdown",
+      "results": [
+        { "state": "idle in transaction", "count": 18 },
+        { "state": "active", "count": 24 },
+        { "state": "idle", "count": 6 }
+      ],
+      "total_connections": 48,
+      "pool_max": 48
+    },
+    "parseable_payment_correlation": {
+      "description": "Upstream payment service error correlation",
+      "results": {
+        "payment_errors": "context deadline exceeded",
+        "payment_error_start": "2025-01-25T03:35:00Z",
+        "stuck_requests": 23,
+        "note": "Payment service errors started 3 minutes before checkout pool exhaustion"
+      }
+    }
+  },
+  "turn_3_context": {
+    "remediation_action": "Killed idle-in-transaction sessions older than 5 minutes",
+    "remediation_sql": "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'idle in transaction' AND query_start < NOW() - INTERVAL '5 minutes'",
+    "pool_status_after": "recovered - errors dropping",
+    "deploy_info": {
+      "version": "v2.14.3",
+      "deployed_at": "2025-01-24T14:00:00Z",
+      "previous_version": "v2.14.2",
+      "first_occurrence_of_alert": true
+    }
+  },
+  "expected_diagnosis": {
+    "root_cause": "Transaction leak introduced in checkout-service v2.14.3",
+    "mechanism": "Code path opens a database transaction but fails to commit/rollback when the payment service returns a timeout or context deadline exceeded error. The connection remains in 'idle in transaction' state, eventually exhausting the pool.",
+    "timeline": [
+      "03:35 UTC - Payment service begins experiencing timeouts",
+      "03:35-03:38 UTC - Checkout service accumulates idle-in-transaction connections as payment timeouts leave uncommitted transactions",
+      "03:38 UTC - Error rate spikes as pool nears exhaustion",
+      "03:42 UTC - Pool fully exhausted (48/48), alert fires"
+    ],
+    "code_pattern_to_find": "Missing defer tx.Rollback() or missing error handling after payment call within a transaction block"
+  }
+}

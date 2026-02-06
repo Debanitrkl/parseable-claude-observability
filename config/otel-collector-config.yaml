@@ -1,0 +1,61 @@
+# OpenTelemetry Collector configuration for sending telemetry to Parseable
+#
+# This config is designed to be used as an overlay with the OTel Demo's
+# default collector configuration. Copy this file to:
+#   opentelemetry-demo/src/otelcollector/otelcol-config-extras.yaml
+#
+# Or use it as a standalone config for your own OTel Collector deployment.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+
+  # Add resource attributes for better identification in Parseable
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: "otel-demo"
+        action: upsert
+
+exporters:
+  # Parseable OTLP HTTP exporter for logs
+  otlphttp/parseable-logs:
+    endpoint: "http://host.docker.internal:8000/v1"
+    headers:
+      Authorization: "Basic cGFyc2VhYmxlOnBhcnNlYWJsZQ=="
+      X-P-Stream: "otel-logs"
+    tls:
+      insecure: true
+
+  # Parseable OTLP HTTP exporter for traces
+  otlphttp/parseable-traces:
+    endpoint: "http://host.docker.internal:8000/v1"
+    headers:
+      Authorization: "Basic cGFyc2VhYmxlOnBhcnNlYWJsZQ=="
+      X-P-Stream: "traces"
+    tls:
+      insecure: true
+
+  # Keep the default debug exporter for troubleshooting
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, resource]
+      exporters: [otlphttp/parseable-traces, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch, resource]
+      exporters: [otlphttp/parseable-logs, debug]

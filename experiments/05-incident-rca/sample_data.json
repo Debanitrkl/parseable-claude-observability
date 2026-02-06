@@ -1,0 +1,614 @@
+{
+  "incident": {
+    "id": "INC-2025-0115-001",
+    "title": "Checkout success rate degradation",
+    "severity": "P1",
+    "started_at": "2025-01-15T14:25:00Z",
+    "detected_at": "2025-01-15T14:28:00Z",
+    "resolved_at": "2025-01-15T14:52:00Z",
+    "duration_minutes": 27
+  },
+  "symptoms": {
+    "checkout_success_rate": {
+      "before": 99.2,
+      "during": 61.3,
+      "unit": "percent"
+    },
+    "customer_error": "Payment processing failed, please try again",
+    "pagerduty_opened_at": "2025-01-15T14:28:00Z",
+    "last_deployment": {
+      "service": "payment-service",
+      "version": "v2.14.3",
+      "deployed_at": "2025-01-15T08:25:00Z",
+      "change_description": "Update payment gateway TLS certificates",
+      "resource_change": {
+        "field": "resources.limits.cpu",
+        "old_value": "2000m",
+        "new_value": "200m",
+        "note": "Accidental typo -- missing a zero"
+      }
+    }
+  },
+  "log_excerpts": [
+    {
+      "timestamp": "2025-01-15T14:25:01Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4213,
+        "trace_id": "abc001"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:01Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 847
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:02Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 3891,
+        "trace_id": "abc002"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:03Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc001"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:03Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc002"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:04Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 5102,
+        "trace_id": "abc003"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:04Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 1203
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:05Z",
+      "service_name": "checkout-service",
+      "level": "WARN",
+      "message": "Payment retry 1/3 failed for order ord_98234",
+      "attributes": {
+        "trace_id": "abc003"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:06Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4567,
+        "trace_id": "abc004"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:07Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "Payment retry 2/3 failed for order ord_98234",
+      "attributes": {
+        "trace_id": "abc003"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:08Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 1589
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:09Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "Payment retry 3/3 failed for order ord_98234",
+      "attributes": {
+        "trace_id": "abc003"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:09Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "Order ord_98234 failed: payment processing exhausted retries",
+      "attributes": {
+        "trace_id": "abc003"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:10Z",
+      "service_name": "frontend",
+      "level": "ERROR",
+      "message": "Checkout failed for user usr_44521: Payment processing failed",
+      "attributes": {
+        "trace_id": "abc003"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:11Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 3756,
+        "trace_id": "abc005"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:12Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 1923
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:13Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4891,
+        "trace_id": "abc006"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:14Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc005"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:14Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc006"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:15Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 2341
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:16Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 5234,
+        "trace_id": "abc007"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:17Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4102,
+        "trace_id": "abc008"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:18Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc007"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:18Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc008"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:19Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 2756
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:20Z",
+      "service_name": "frontend",
+      "level": "ERROR",
+      "message": "Checkout failed for user usr_44589: Payment processing failed",
+      "attributes": {
+        "trace_id": "abc007"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:21Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 3945,
+        "trace_id": "abc009"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:22Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 3102
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:23Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc009"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:24Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4678,
+        "trace_id": "abc010"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:25Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 3489
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:26Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc010"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:27Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 5012,
+        "trace_id": "abc011"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:28Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 3891
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:29Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc011"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:30Z",
+      "service_name": "frontend",
+      "level": "ERROR",
+      "message": "Checkout failed for user usr_44601: Payment processing failed",
+      "attributes": {
+        "trace_id": "abc011"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:31Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4345,
+        "trace_id": "abc012"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:32Z",
+      "service_name": "payment-service",
+      "level": "WARN",
+      "message": "Request processing slow, CPU pressure detected",
+      "attributes": {
+        "pid": 1,
+        "cpu_throttle_count": 4234
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:33Z",
+      "service_name": "checkout-service",
+      "level": "ERROR",
+      "message": "PaymentService.ProcessPayment failed: DeadlineExceeded",
+      "attributes": {
+        "trace_id": "abc012"
+      }
+    },
+    {
+      "timestamp": "2025-01-15T14:25:34Z",
+      "service_name": "payment-service",
+      "level": "ERROR",
+      "message": "gRPC deadline exceeded calling payment-gateway",
+      "attributes": {
+        "timeout_ms": 2000,
+        "actual_ms": 4890,
+        "trace_id": "abc013"
+      }
+    }
+  ],
+  "trace_samples": [
+    {
+      "trace_id": "abc001",
+      "spans": [
+        {
+          "span_id": "s001_1",
+          "parent_span_id": "",
+          "service_name": "frontend",
+          "operation_name": "POST /checkout",
+          "duration_ms": 1847,
+          "status_code": "ERROR",
+          "http_status": 502
+        },
+        {
+          "span_id": "s001_2",
+          "parent_span_id": "s001_1",
+          "service_name": "checkout-service",
+          "operation_name": "ProcessCheckout",
+          "duration_ms": 1790,
+          "status_code": "ERROR",
+          "http_status": 500
+        },
+        {
+          "span_id": "s001_3",
+          "parent_span_id": "s001_2",
+          "service_name": "payment-service",
+          "operation_name": "ProcessPayment",
+          "duration_ms": 4213,
+          "status_code": "ERROR",
+          "http_status": null
+        }
+      ]
+    },
+    {
+      "trace_id": "abc003",
+      "spans": [
+        {
+          "span_id": "s003_1",
+          "parent_span_id": "",
+          "service_name": "frontend",
+          "operation_name": "POST /checkout",
+          "duration_ms": 15234,
+          "status_code": "ERROR",
+          "http_status": 504
+        },
+        {
+          "span_id": "s003_2",
+          "parent_span_id": "s003_1",
+          "service_name": "checkout-service",
+          "operation_name": "ProcessCheckout",
+          "duration_ms": 15180,
+          "status_code": "ERROR",
+          "http_status": 504
+        },
+        {
+          "span_id": "s003_3",
+          "parent_span_id": "s003_2",
+          "service_name": "payment-service",
+          "operation_name": "ProcessPayment",
+          "duration_ms": 5102,
+          "status_code": "ERROR",
+          "http_status": null,
+          "note": "retry 1"
+        },
+        {
+          "span_id": "s003_4",
+          "parent_span_id": "s003_2",
+          "service_name": "payment-service",
+          "operation_name": "ProcessPayment",
+          "duration_ms": 4567,
+          "status_code": "ERROR",
+          "http_status": null,
+          "note": "retry 2"
+        },
+        {
+          "span_id": "s003_5",
+          "parent_span_id": "s003_2",
+          "service_name": "payment-service",
+          "operation_name": "ProcessPayment",
+          "duration_ms": 5012,
+          "status_code": "ERROR",
+          "http_status": null,
+          "note": "retry 3"
+        }
+      ]
+    },
+    {
+      "trace_id": "abc005",
+      "spans": [
+        {
+          "span_id": "s005_1",
+          "parent_span_id": "",
+          "service_name": "frontend",
+          "operation_name": "POST /checkout",
+          "duration_ms": 1623,
+          "status_code": "ERROR",
+          "http_status": 502
+        },
+        {
+          "span_id": "s005_2",
+          "parent_span_id": "s005_1",
+          "service_name": "checkout-service",
+          "operation_name": "ProcessCheckout",
+          "duration_ms": 1580,
+          "status_code": "ERROR",
+          "http_status": 500
+        },
+        {
+          "span_id": "s005_3",
+          "parent_span_id": "s005_2",
+          "service_name": "payment-service",
+          "operation_name": "ProcessPayment",
+          "duration_ms": 3756,
+          "status_code": "ERROR",
+          "http_status": null
+        }
+      ]
+    }
+  ],
+  "metric_snapshots": {
+    "payment_service": {
+      "cpu": {
+        "usage_millicores": 199,
+        "limit_millicores": 200,
+        "request_millicores": 100,
+        "utilization_pct": 99.5
+      },
+      "memory": {
+        "usage_mi": 256,
+        "limit_mi": 512,
+        "utilization_pct": 50.0
+      },
+      "replicas": {
+        "desired": 3,
+        "ready": 3
+      },
+      "cfs_throttling": {
+        "throttled_periods": 4601,
+        "throttled_time_seconds": 187.3,
+        "window": "5 minutes"
+      },
+      "latency": {
+        "current_5min": {
+          "p50_ms": 3891,
+          "p95_ms": 4890,
+          "p99_ms": 5234,
+          "error_rate_pct": 38.7
+        },
+        "previous_hour": {
+          "p50_ms": 187,
+          "p95_ms": 312,
+          "p99_ms": 456,
+          "error_rate_pct": 0.3
+        }
+      }
+    },
+    "checkout_service": {
+      "cpu": {
+        "usage_millicores": 450,
+        "limit_millicores": 2000,
+        "utilization_pct": 22.5
+      },
+      "memory": {
+        "usage_mi": 1229,
+        "limit_mi": 4096,
+        "utilization_pct": 30.0
+      },
+      "success_rate": {
+        "current_pct": 61.3,
+        "previous_pct": 99.2
+      }
+    },
+    "deployment_history": {
+      "last_deploy": {
+        "timestamp": "2025-01-15T08:25:00Z",
+        "service": "payment-service",
+        "version": "v2.14.3",
+        "description": "Update payment gateway TLS certificates",
+        "diff_highlights": [
+          "resources.limits.cpu: 2000m -> 200m (UNINTENDED CHANGE)"
+        ]
+      }
+    }
+  }
+}

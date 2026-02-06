@@ -1,0 +1,32 @@
+# Docker Compose override for adding Parseable to the OTel Demo stack
+#
+# Usage:
+#   1. Place this file in the opentelemetry-demo/ directory
+#   2. Run: docker compose -f docker-compose.yaml -f docker-compose.override.yaml up -d
+#
+# Or run Parseable separately:
+#   docker run -p 8000:8000 parseable/parseable:latest parseable local-store
+
+services:
+  parseable:
+    image: parseable/parseable:latest
+    command: parseable local-store
+    ports:
+      - "8000:8000"
+    environment:
+      - P_USERNAME=parseable
+      - P_PASSWORD=parseable
+    volumes:
+      - parseable-data:/parseable/data
+      - parseable-staging:/parseable/staging
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/liveness"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - default
+
+volumes:
+  parseable-data:
+  parseable-staging:
